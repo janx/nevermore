@@ -1,0 +1,197 @@
+/* ==========================================================================
+   Component: Form
+ ============================================================================ */
+
+ .form-group {
+   label {
+     display: inline-block;
+     margin-bottom: .5rem
+   }
+
+   margin-bottom: $form-group-margin-bottom;
+ }
+
+/*
+ * 将表单输入框样式一致化，重置无用的样式
+ */
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: $input-padding-y $input-padding-x;
+  border: 1px solid $input-border-color;
+  color: $input-color;
+  background-color: $input-bg;
+  background-image: none;
+  transition: border-color ease-in-out .15s;
+
+  &:focus {
+    border-color: $input-border-focus;
+    outline: none;
+  }
+
+  &:disabled,
+  &[readonly] {
+    background-color: $input-bg-disabled;
+    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+    opacity: 1;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  // Placeholder
+  &::placeholder {
+    color: $input-color-placeholder;
+    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+    opacity: 1;
+  }
+
+  // Unstyle the caret on `<select>`s in IE10+.
+  &::-ms-expand {
+    background-color: transparent;
+    border: 0;
+  }
+
+  &.success {
+    border-color: $brand-success;
+
+    &:focus {
+      border-color: $brand-success;
+    }
+  }
+
+  &.warning {
+    border-color: $brand-warning;
+
+    &:focus {
+      border-color: $brand-warning;
+    }
+  }
+}
+
+.radio,
+.checkbox {
+  position: relative;
+  display: block;
+  margin-bottom: .75rem;
+
+  &.disabled {
+    label {
+      cursor: not-allowed;
+    }
+  }
+
+  label {
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      position: absolute;
+      margin-top: .25rem;
+      margin-left: -1.25rem;
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.radio + .radio,
+.checkbox + .checkbox {
+  // Move up sibling radios or checkboxes for tighter spacing
+  margin-top: -.25rem;
+}
+
+// Select
+//
+// Replaces the browser default select with a custom one, mostly pulled from
+// http://primercss.io.
+//
+// Includes IE9-specific hacks (noted by ` \9`).
+
+.c-select {
+  display: inline-block;
+  max-width: 100%;
+  padding: .375rem 1.75rem .375rem .75rem;
+  padding-right: .75rem \9;
+  color: $input-color;
+  vertical-align: middle;
+  background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC) no-repeat right .75rem center;
+  background-image: none \9;
+  background-size: 8px 10px;
+  border: 1px solid $input-border-color;
+  border-radius: 0;
+  // Use vendor prefixes as `appearance` isn't part of the CSS spec.
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    border-color: #51a7e8;
+    outline: none;
+  }
+
+  // Hides the default caret in IE11
+  &::-ms-expand {
+    opacity: 0;
+  }
+}
+
+// File
+//
+// Custom file input.
+
+.file {
+  position: relative;
+  display: inline-block;
+  height: 2.5rem;
+  cursor: pointer;
+
+  input {
+    min-width: 14rem;
+    margin: 0;
+    filter: alpha(opacity = 0);
+    opacity: 0;
+  }
+}
+
+.file-custom {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  height: 2.5rem;
+  padding: .5rem 1rem;
+  line-height: 1.5;
+  color: #555;
+  user-select: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+
+  &::before {
+    position: absolute;
+    top: -.075rem;
+    right: -.075rem;
+    bottom: -.075rem;
+    z-index: 6;
+    display: block;
+    height: 2.5rem;
+    padding: .5rem 1rem;
+    line-height: 1.5;
+    color: #555;
+    content: "Browse";
+    background-color: #eee;
+    border: 1px solid #ddd;
+    border-radius: 0 .25rem .25rem 0;
+  }
+
+  &::after {
+    content: "Choose file...";
+  }
+}

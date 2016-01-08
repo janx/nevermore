@@ -1,0 +1,82 @@
+/* ==========================================================================
+   Component: Button
+ ============================================================================ */
+
+/*
+ * 将按钮样式一致化，重置无用的样式
+ */
+
+.btn {
+  @include button-size(120px, 36px, 14px);
+  display: inline-block;
+  padding: 0;
+  border: 1px solid transparent;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:active,
+  &:focus {
+    outline: 0;
+    background-image: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+  }
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+/*
+ * 实心按钮
+ */
+
+.btn-primary {
+  @include button-variant($btn-primary-color, $btn-primary-bg);
+}
+.btn-info {
+  @include button-variant($btn-info-color, $btn-info-bg);
+}
+.btn-success {
+  @include button-variant($btn-success-color, $btn-success-bg);
+}
+.btn-warning {
+  @include button-variant($btn-warning-color, $btn-warning-bg);
+}
+.btn-danger {
+  @include button-variant($btn-danger-color, $btn-danger-bg);
+}
+
+/*
+ * 空心按钮
+ */
+
+ .btn-primary-outline {
+   @include button-outline-variant($btn-primary-bg);
+ }
+ .btn-info-outline {
+   @include button-outline-variant($btn-info-bg);
+ }
+ .btn-success-outline {
+   @include button-outline-variant($btn-success-bg);
+ }
+ .btn-warning-outline {
+   @include button-outline-variant($btn-warning-bg);
+ }
+ .btn-danger-outline {
+   @include button-outline-variant($btn-danger-bg);
+ }

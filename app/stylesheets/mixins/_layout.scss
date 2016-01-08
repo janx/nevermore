@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Mixins: Layout
+ ============================================================================ */
+
+/*
+ * 清除浮动
+ * 应用于产生 float 的元素
+ */
+
+@mixin clearfix() {
+&:before,
+&:after {
+  content: " ";
+  display: table;
+}
+&:after {
+  clear: both;
+}
+}
+
+/*
+ * 居中
+ * @margin-top,  @margin-bottom 参数设置上下间距
+ */
+
+@mixin center-block($margin-top: 0, $margin-bottom: 0) {
+  display: block;
+  margin: $margin-top auto $margin-bottom;
+}
+
+/*
+ * 垂直居中
+ *
+ */
+@mixin center($position) {
+  position: absolute;
+
+  @if $position == 'vertical' {
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  @else if $position == 'horizontal' {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translate(-50%);
+  }
+
+  @else if $position == 'both' {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}

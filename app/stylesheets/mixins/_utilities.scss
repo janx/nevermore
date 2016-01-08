@@ -1,0 +1,151 @@
+/* ==========================================================================
+   Mixins: Utilities
+ ============================================================================ */
+
+/*
+ * 圆角处理
+ */
+
+@mixin border-round($size) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+}
+
+/*
+ * 单行省略，需同时设置 max-width
+ */
+
+@mixin text-overflow($display: block) {
+  display: $display;
+  word-wrap: normal; /* for IE */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/*
+ * 多行省略，需同时设置 max-width
+ * 仅在 webkit 下有效，其他浏览器为截断
+ * 1. $line 代表行数
+ */
+
+@mixin line-clamp($lines, $line-height: 1.3em) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines; /* 1 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: $line-height;
+  max-height: $line-height * $lines;
+}
+
+/*
+ * 图片响应式，根据宽度，高度同比例变化
+ */
+
+@mixin img-responsive($display: block) {
+  display: $display;
+  max-width: 100%;
+  height: auto;
+}
+
+/*
+ * 图片居中
+ */
+
+@mixin img-center() {
+  position: absolute;
+  top: -100%;
+  right: -100%;
+  bottom: -100%;
+  left: -100%;
+  margin: auto;
+  width: 100%;
+  min-height: 100%;
+}
+
+
+/*
+ * 视频响应式，通过 padding-bottom 来控制高度
+ * 1.padding-bottom 的百分比数值来自宽度
+ */
+
+@mixin embed-responsive($ratio: 56.25%) {
+  position: relative;
+  display: block;
+  height: 0;
+  padding-bottom: $ratio; /* 1 */
+  overflow: hidden;
+
+  & iframe,
+  & embed,
+  & object,
+  & video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    border: 0;
+  }
+}
+
+/*
+ * 1. 一般设置 textarea  拖拉的方向，水平或垂直等等
+ * 2. resize 仅应用在 overflow 不为 visible 的元素上
+ */
+
+@mixin resizable($direction) {
+  resize: $direction; /* 1 */
+  overflow: auto; /* 2 */
+}
+
+/*
+ * 响应式显示
+ */
+
+@mixin responsive-visibility() {
+  display: block !important;
+
+  //table { display: table; }
+  //tr    { display: table-row !important; }
+  //th,
+  //td    { display: table-cell !important; }
+}
+
+/*
+ * 响应式隐藏
+ */
+
+@mixin responsive-invisibility() {
+  display: none !important;
+}
+
+
+/*
+ * 渐变显示和隐藏
+ */
+@mixin fade($type) {
+
+  @if $type == 'hide' {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s, opacity 1s;
+  }
+
+  @else if $type == 'show' {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 1s, opacity 1s;
+  }
+}
+
+/*
+ * Fullscreen Background Image
+ */
+@mixin bg-cover($url) {
+  background: url($url) no-repeat center center fixed;
+  background-size: cover;
+}

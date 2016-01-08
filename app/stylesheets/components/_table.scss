@@ -1,0 +1,53 @@
+
+.tax-calculate {
+  @include center-block();
+  width: 780px;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  // border: 1px solid $table-border-color;
+  // margin-bottom: 1rem;
+  background-color: #fff;
+  font-size: 14px;
+
+  // tr {
+  //   &:last-child {
+  //     td {
+  //       border-bottom: none;
+  //     }
+  //   }
+  // }
+
+  th,
+  td {
+    padding: $table-cell-padding;
+    line-height: $line-height-base;
+    vertical-align: middle;
+    text-align: left;
+    border-bottom: 1px solid $table-border-color;
+  }
+
+  thead th {
+    border-bottom: none;
+    color: #999;
+    background-color: #F1F8FD;
+    font-weight: normal;
+  }
+}
+
+.table-hover {
+  tbody tr {
+    &:hover {
+      background-color: $table-bg-hover;
+    }
+  }
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  min-height: 0.01%; // Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837)
+  overflow-x: auto;
+}

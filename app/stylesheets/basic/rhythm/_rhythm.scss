@@ -1,0 +1,362 @@
+/*! Rhythm v1.1.0 | MIT License | Aaaaaashu.me */
+
+@import './variables';
+@import './mixins';
+
+/* 布局模式
+   --重置默认样式，去除默认的间距，方便更精确的布局
+   ========================================================================== */
+
+/**
+ * 重置全局盒模型为 border-box
+ */
+
+ html {
+   box-sizing: border-box;
+ }
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/*
+ * 1. Sets a specific default `font-size` for user with `rem` type scales.
+ * 2. Changes the default tap highlight to be completely transparent in iOS.
+ */
+
+html {
+  font-size: $font-size-root; /* 1 */
+  -webkit-tap-highlight-color: rgba(0,0,0,0); /* 2 */
+}
+
+body {
+  // Make the `body` use the `font-size-root`
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  // Go easy on the eyes and use something other than `#000` for text
+  color: $body-color;
+  // By default, `<body>` has no `background-color` so we set one as a best practice.
+  background-color: $body-bg;
+}
+
+/**
+ * 重置默认的 margin 和 padding 为 0
+ */
+
+h1, h2, h3, h4, h5, h6,
+p, hr, code, pre, blockquote, ol, ul, li, figure, figcaption,
+table, caption, thead, tbody, tfoot, tr, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * 1. 重置标题颜色
+ * 2. 重置标题字重为 normal
+ */
+
+h1, h2, h3, h4, h5, h6 {
+  color: $color-heading; /* 1 */
+  font-weight: normal; /* 2 */
+}
+
+/**
+ * 重置文本行高为 1em
+ */
+
+h1, h2, h3, h4, h5, h6, p
+span, a {
+  line-height: 1em;
+}
+
+/**
+ * 重置列表默认样式
+ */
+
+ul, ol {
+  list-style: none;
+}
+
+/**
+ * 重置超链接默认的下划线样式
+ */
+
+a {
+  text-decoration: none;
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+/* 排版模式
+   -- DOM 节点添加 .rhythm 后，增加相应的排版样式
+   ========================================================================== */
+.rhythm {
+
+  /**
+   * 1. 设置 Rhythm 全局行高
+   * 2. 亚像素渲染字体，更多详情（http://www.html5rocks.com/en/tutorials/internals/antialiasing-101/）
+   */
+
+  line-height: $line-height-base; /* 1 */
+  -webkit-font-smoothing: subpixel-antialiased; /* 2 */
+
+  /**
+   * 统一标题字体大小
+   */
+
+  h1 { font-size: $font-size-h1; }
+  h2 { font-size: $font-size-h2; }
+  h3 { font-size: $font-size-h3; }
+  h4 { font-size: $font-size-h4; }
+  h5 { font-size: $font-size-h5; }
+  h6 { font-size: $font-size-h6; }
+
+  /**
+   * 统一标题的上下间距
+   */
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: $rhythm-headding-top;
+    margin-bottom: $rhythm-headding-bottom;
+  }
+
+  /**
+   * 小级标题对大级标题收紧
+   * 同级标题互相收紧
+   *
+   * 大级标题
+   * 不对小级标题收紧
+   *
+   * 一级标题
+   * 不对一级标题收紧
+   *
+   * 参考 Han.css（https://css.hanzi.co/manual/zhangjie_de_bianpai#wenzhang_zhangjie_yu_neirong_de_bianjie_tiaozheng-biaoti）
+   */
+  //.heading-knit(5);
+  //.heading-knit(4);
+  //.heading-knit(3);
+  //.heading-knit(2);
+
+  /**
+   * 统一文本块的下间距，以及最后一个块元素下间距为零
+   */
+
+  p, pre, blockquote,
+  ul, ol, hr,
+  table, figure {
+    margin-bottom: $rhythm-text-bottom;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  /**
+   * 统一文本段落的行高
+   */
+
+  p, li {
+    line-height: $line-height-article;
+  }
+
+  /**
+   * 恢复无序、有序列表默认样式
+   */
+
+  ul { list-style-type: disc; }
+  ol { list-style-type: decimal; }
+
+  /**
+   * 统一列表的左缩进，默认缩进两个字元
+   */
+
+  ol, ul { padding-left: $indent; }
+
+  /**
+   * 列表项中的列表下间距为零
+   */
+
+  li ul,
+  li ol { margin-bottom: 0; }
+
+  /**
+   * 统一 table 样式，高亮表头背景，表格单元居左对齐
+   */
+
+  table {
+    th, td, caption {
+      border: 1px solid $color-table-border;
+      padding: 0.5em 1em;
+      line-height: 1.2;
+    }
+
+    caption {
+      border-bottom: none;
+    }
+
+    thead th {
+      text-align: left;
+      font-weight: normal;
+      background-color: $color-table-th-bg;
+    }
+
+    tbody {
+      td {
+        background-color: $color-table-td-bg;
+      }
+    }
+  }
+
+  /**
+   * 统一引用样式，左缩进一个字元，字体为楷体
+   */
+
+  blockquote {
+    color: $color-text;
+    border-left: 2px solid $color-blockquote-border;
+    padding-left: 1em;
+    font-family: $font-family-cursive;
+  }
+
+  /**
+   * 统一图表内容样式
+   * 图片居中、等比缩放
+   * 图片说明居右，字体为宋体
+   */
+
+  figure {
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    figcaption {
+      display: block;
+      text-align: right;
+      font-family: $font-family-serif;
+      font-size: $font-size-smaller;
+      color: $color-figcaption;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /**
+   * 统一预格式化文本和代码片段字体为等宽字体
+   */
+
+  pre, code {
+    font-family: $font-family-monospace;
+  }
+
+  /**
+   * 1. 不合并文字间的空白间距，当文字超出边界时不换行
+   * 2. 允许内容溢出容器边界
+   * 3. 当内容没有溢出容器时不出现滚动条，当内容溢出容器时出现滚动条
+   */
+
+  pre {
+    border: 1px solid $color-code-border;
+    padding: 1em 1em;
+    white-space: pre; /* 1 */
+    word-wrap: normal; /* 2 */
+    overflow: auto; /* 3 */
+  }
+
+  /**
+   * 1. 不合并文字间的空白间距，当文字超出边界时换行
+   */
+
+  code {
+    border-radius: 2px;
+    border: 1px solid $color-code-border;
+    padding: 2px 4px;
+    color: $color-code;
+    background-color: $color-code-bg;
+    font-size: 90%;
+    white-space: pre-line; /* 1 */
+  }
+
+  /**
+   * 1. 不合并文字间的空白间距，当文字超出边界时不换行
+   */
+
+  pre code {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: 90%;
+    background-color: transparent;
+    white-space: pre; /* 1 */
+  }
+
+  /**
+   * 统一超链接样式，利用 border-bottom 代替 text-decoration
+   */
+
+  a {
+    color: $color-link;
+    font-family: $font-family-serif;
+    &:hover {
+      padding-bottom: 0.125em;
+      border-bottom: 1px dotted rgba(153,153,153,.8);
+      color: $color-link-hover;
+    }
+    &:active {
+      color: $color-link-active;
+    }
+  }
+
+  /**
+   * 若支持着重号则启用 text-emphasis
+   * 已知问题：若字体为宋体，则着重号会过粗
+   */
+
+  //em { .text-emphasis(); }
+
+  /**
+   * 统一注记样式，利用 border-bottom 代替 text-decoration
+   */
+
+  u {
+    padding-bottom: .125em;
+    border-bottom: 1px solid;
+    text-decoration: none;
+  }
+
+  /**
+   * 统一斜体样式，中文使用楷体替换意大利体
+   */
+
+  i {
+    font-style: normal;
+    font-family: $font-family-cursive;
+  }
+
+  /**
+   * 统一行间注的字体为楷体
+   */
+
+  ruby {
+    font-family: $font-family-cursive;
+  }
+
+  /**
+   * 统一水平分隔线样式
+   * 利用 border-bottom 模拟 hr 默认样式
+   * 参考 HTML5 Boilerplate (https://github.com/paulirish/html5-boilerplate/blob/ef3c095bafa9a6fa9c771f368d4b30c8ce4deded/css/style.css#L75)
+   */
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-bottom: 1px solid $color-hr;
+    margin: 1em 0;
+    padding: 0;
+  }
+}

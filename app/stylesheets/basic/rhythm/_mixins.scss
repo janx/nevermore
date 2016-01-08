@@ -1,0 +1,20 @@
+
+//@mixin text-emphasis() when (@support-em) {
+//  font-style: normal;
+//  -moz-text-emphasis: filled circle;
+//  -webkit-text-emphasis: filled circle;
+//  text-emphasis: filled circle;
+//  -moz-text-emphasis-position: under;
+//  -webkit-text-emphasis-position: under;
+//  text-emphasis-position: under;
+//}
+//
+//@mixin heading-knit(@heading, @i: 1) when (@i =< @heading) {
+//  h@{i} {
+//  + h@{heading} {
+//  margin-top: 0;
+//}
+//}
+//
+//  .heading-knit(@heading, (@i + 1));
+//}
