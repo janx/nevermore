@@ -19,6 +19,7 @@ contract('CreditBook', function(accounts) {
         assert.equal('0', result.args.id.toString());
         assert.equal('100', result.args.fee.toString());
         assert.equal('2718281828', result.args.timestamp.toString());
+        assert.equal(accounts[0], result.args.provider);
         done();
       }
     });
