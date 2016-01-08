@@ -3,8 +3,6 @@ console.log($);
 console.log("Angular loaded");
 console.log(angular);
 
-<<<<<<< HEAD
-
 // Bootstrap Angualr module
 angular.module('Nevermore', [])
   .controller('MyController', ['$scope', function ($scope) {
