@@ -3,6 +3,7 @@ console.log($);
 console.log("Angular loaded");
 console.log(angular);
 
+<<<<<<< HEAD
 
 // Bootstrap Angualr module
 angular.module('Nevermore', [])
@@ -11,5 +12,9 @@ angular.module('Nevermore', [])
   }]);
 
 angular.element(document).ready(function() {
+  // Try to communicate with blockchain
+  var book = CreditBook.deployed();
+  var address = web3.eth.accounts[0]
+
   angular.bootstrap(document, ['Nevermore']);
 });
