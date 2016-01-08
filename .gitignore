@@ -1,2 +1,3 @@
 tags
 environments/development/build
+environments/**/*.sol.js

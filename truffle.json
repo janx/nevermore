@@ -20,11 +20,11 @@
   },
   "deploy": [
     // Names of contracts that should be deployed to the network.
-    "Example"
+    "CreditBook"
   ],
   "rpc": {
     // Default RPC configuration.
     "host": "localhost",
-    "port": 8545
+    "port": 4999 // testrpc
   }
 }
