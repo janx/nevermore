@@ -1,0 +1,236 @@
+@import "basic/rhythm/rhythm";
+@import "basic/variables";
+@import "basic/normalize";
+
+@import "mixins/mixins";
+
+@import "components/form";
+@import "components/button";
+@import "components/table";
+
+@import "animation";
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: 'Lato', sans-serif;
+  background: url('../images/chain.png') no-repeat center center fixed;
+  background-size: cover;
+
+  h1, h2, h3,
+  p, span, a, div, table {
+    font-weight: 300;
+  }
+}
+
+.navbar {
+  width: 100%;
+  height: 56px;
+  padding: 0 4em;
+  border-bottom: 1px solid #ececec;
+  background-color: #fff;
+  line-height: 56px;
+  text-align: right;
+
+  .link {
+    padding-left: 1em;
+    color: #999;
+  }
+}
+
+.main {
+  @include center-block(120px, 0);
+  position: relative;
+  flex-direction: column;
+  width: 780px;
+
+  .slogan {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .search {
+    margin-bottom: 2em;
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+
+      .form-control {
+        display: inline-block;
+        width: 620px;
+        padding: 1rem;
+      }
+
+      .upload {
+        width: 140px;
+        height: 54px;
+      }
+    }
+  }
+
+  .info {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 160px;
+    padding: 2em;
+    border: 1px solid #ececec;
+    margin-bottom: 2em;
+    background-color: #fff;
+
+    .profile {
+      text-align: center;
+
+      .avatar {
+        width: 60px;
+      }
+
+      .identity {
+        font-size: 12px;
+      }
+    }
+
+    .radar {
+      width: 200px;
+      height: 200px;
+    }
+
+    .prompt {
+      text-align: right;
+      .description {
+        text-align: left;
+      }
+
+      .purchase {
+        margin-top: 24px;
+      }
+    }
+  }
+}
+
+.table-container {
+  position: relative;
+  padding: 0 1em;
+  border: 1px solid #CAE5F9;
+  margin-bottom: 2em;
+  background-color: #fff;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 42px;
+    width: 100%;
+    background-color: #F1F8FD;
+  }
+
+  .table {
+    z-index: 10;
+    position: relative;
+
+    .status {
+      &.applying { color: #0073DF; }
+      &.bad-debt { color: #EB716E; }
+      &.advance { color: #92CF7E; }
+      &.loaning { color: #8875CC; }
+    }
+  }
+
+  .checkout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0;
+
+    .sum {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin-left: 50px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -52px;
+        background: url('../images/rmb.svg') no-repeat center center;
+        width: 54px;
+        height: 62.5px;
+      }
+
+      .price {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #848484;
+      }
+
+      .description {
+        color: #999;
+        font-size: 12px;
+        text-align: center;
+        font-weight: 400;
+      }
+    }
+
+    .purchase {
+
+    }
+  }
+}
+
+.purchase-form,
+.upload-form {
+  @include center-block();
+  width: 360px;
+  padding: 2em;
+  border: 1px solid #CAE5F9;
+  margin-bottom: 2em;
+  background-color: #fff;
+  text-align: center;
+
+  .title {
+    margin-bottom: 1em;
+  }
+
+  .price {
+    margin-bottom: 1em;
+    color: #999;
+    font-size: 28px;
+    font-weight: normal;
+  }
+}
+
+.upload-form {
+  form {
+    text-align: left;
+
+    .form-group {
+      label {
+        color: #999;
+        font-weight: normal;
+      }
+    }
+
+    .radio label, .checkbox label {
+      font-weight: 100;
+    }
+
+    .confirm {
+      @include center-block();
+    }
+  }
+}
+
+.mask {
+  z-index: -10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: .3;
+}
