@@ -25,10 +25,6 @@
   "rpc": {
     // Default RPC configuration.
     "host": "localhost",
-<<<<<<< HEAD
-    "port": 4998
-=======
     "port": 4999 // testrpc
->>>>>>> 92438fe830fa381a0e6552e5054d4c41c80ee476
   }
 }
