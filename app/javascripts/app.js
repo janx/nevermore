@@ -1,2 +1,4 @@
-var welcome_string = "Hello from Truffle!";
-console.log(welcome_string);
+console.log("jQuery loaded");
+console.log($);
+console.log("Angular loaded");
+console.log(angular);

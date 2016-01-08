@@ -5,6 +5,8 @@
     "app.js": [
       // Paths relative to "app" directory that should be
       // concatenated and processed during build.
+      "javascripts/lib/jquery.js",
+      "javascripts/lib/angular.js",
       "javascripts/app.js"
     ],
     "app.css": [
