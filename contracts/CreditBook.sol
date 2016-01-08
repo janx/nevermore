@@ -23,6 +23,11 @@ contract CreditBook is owned, mortal {
     owner = msg.sender;
   }
 
+  function size() constant returns (uint256) {
+    return records.length;
+  }
+
+  // TODO: make sure commit is unique
   function submit(bytes32 user, uint16 category, uint16 state, uint256 fee, uint256 timestamp, bytes32 commit) external {
     records.push(Record(msg.sender, user, category, state, fee, timestamp, commit));
     NewRecord(user, category, state, fee, timestamp, msg.sender, records.length-1);

@@ -20,7 +20,8 @@
   },
   "deploy": [
     // Names of contracts that should be deployed to the network.
-    "CreditBook"
+    "CreditBook",
+    "OrderBook"
   ],
   "rpc": {
     // Default RPC configuration.
