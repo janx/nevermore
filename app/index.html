@@ -6,8 +6,23 @@
   <script src="./app.js"></script>
 </head>
 <body ng-app="Nevermore">
-  <div ng-controller="MyController">
-    Hello {{greetMe}}!
+  <div ng-controller="SearchCtrl">
+    Search: <input ng-model="query">
+
+    <div class="result">
+      <table>
+        <tbody>
+          <tr ng-if="query.length > 0" ng-repeat="cr in creditRecords|filter: {identity: query}">
+            <td>{{cr.identity}}</td>
+            <td>{{cr.category}}</td>
+            <td>{{cr.state}}</td>
+            <td>{{cr.fee}}</td>
+            <td>{{cr.timestamp}}</td>
+            <td>{{cr.source}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </body>
 </html>
