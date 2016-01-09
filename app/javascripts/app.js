@@ -368,8 +368,28 @@ angular.element(document).ready(function() {
       commit: result.args.commit
     }
 
+    related = false;
+    if(address === request.from) {
+      related = true;
+    }
+
+    if(related) {
+      $.each(window.credit_records, function(index, record) {
+        if(record.commit === request.commit){
+          record.orderstate = 1;
+        }
+      });
+    }
 
     $.requests.push(request)
+
+    if(address === request.from) {
+      $.publish('notice', 'Request send successfully.')
+    }
+
+    if(address === request.provider) {
+      $.publish('notice', 'You received a request.')
+    }
   });
 
 
