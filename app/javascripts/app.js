@@ -12,7 +12,6 @@ filters.filter('categoryFilter', function() {
         result = "Collateral Loan"
         break;
       case 2:
-        result = "Guaranteed Loan"
         break;
     }
 
@@ -120,7 +119,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       list.push(cart[i].commit);
     }
 
-    $.publish('CreditRecord:buy', list);
+    $.publish('CreditRecord:buy', {list: list});
   }
 }]);
 
