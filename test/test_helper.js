@@ -19,6 +19,14 @@ var fromBytes32 = function(hex) {
   return hex.replace(/^(0x0*)/, '')
 };
 
+var encodeToBytes32 = function(str) {
+  return toBytes32(web3.toHex('_v1_'+str).slice(2));
+};
+
+var decodeFromBytes32 = function(hex) {
+  return web3.toAscii('0x' + fromBytes32(hex)).replace(/^_v1_/, '');
+}
+
 var toAddress = function(hex) {
   return '0x'+hexPadding(hex, 40);
 };
