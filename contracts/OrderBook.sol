@@ -18,7 +18,7 @@ contract OrderBook is owned, mortal {
 
   Request[] public requests;
 
-  event NewRequest(uint256 indexed id, bytes32 indexed commit, address indexed provider, uint256 fee);
+  event NewRequest(bytes32 indexed commit, address indexed provider, address indexed from, uint256 id, uint256 fee);
 
   function OrderBook() {
     owner = msg.sender;
@@ -33,11 +33,19 @@ contract OrderBook is owned, mortal {
   }
 
   function request(bytes32 commit) external {
-     address provider = CreditBook(creditBook).getProvider(commit);
-     if(provider == 0x0) throw;
+    address provider;
+    bytes32 user;
+    uint16  category;
+    uint16  state;
+    uint256 fee;
+    uint256 timestamp;
+    (provider, user, category, state, fee, timestamp) = CreditBook(creditBook).records(commit);
 
-     requests.push(Request(commit, provider, msg.sender));
-     NewRequest(requests.length-1, commit, provider, msg.value);
+    if(provider == 0x0) throw;
+    if(msg.value < fee) throw; // TODO: should we refund extra fee?
+
+    requests.push(Request(commit, provider, msg.sender));
+    NewRequest(commit, provider, msg.sender, requests.length-1, msg.value);
   }
 
 }

@@ -58,7 +58,29 @@ contract('OrderBook', function(accounts) {
       }).then(function(txid) {
         assert(!txid, "request succeed!");
       }).catch(function(e) {
-        assert.match(e.message, /TransactionFailed/, "request should fail because requested record doesn't exist")
+        assert.match(e.message, /TransactionFailed/, "request should fail because requested record doesn't exist");
+        done();
+      });
+  });
+
+  it("should validate fee is covered", function(done) {
+    var creditBook = CreditBook.deployed();
+    var orderBook = OrderBook.deployed();
+
+    var eventPromise = Promise.promisify(orderBook.NewRequest);
+
+    var commit = genCommit();
+    var last_id;
+
+    orderBook.setCreditBook(CreditBook.deployed_address)
+      .then(function(txid){
+        return creditBook.submit(user, category, state, fee, timestamp, commit);
+      }).then(function(txid) {
+        return orderBook.request(commit, {value: 99});
+      }).then(function(txid) {
+        assert(!txid, "request succeed!");
+      }).catch(function(e) {
+        assert.match(e.message, /TransactionFailed/, "request should fail because payment doesn't cover fee");
         done();
       });
   });
@@ -83,12 +105,13 @@ contract('OrderBook', function(accounts) {
         eventPromise({})
           .then(function(result) {
             assert.equal((last_id+1).toString(), result.args.id.toString());
-            assert.equal('0x1000000000000000000000000000000000000000000000000000000000000000', result.args.commit);
+            //TODO: assert.equal(commit, result.args.commit);
             assert.equal(accounts[0], result.args.provider);
+            assert.equal('100', result.args.fee.toString());
             done();
           }).catch(done);
 
-       orderBook.request(commit);
+       orderBook.request(commit, {value: 100});
       }).catch(done);
   });
 });

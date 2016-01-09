@@ -6,11 +6,10 @@ contract CreditBook is owned, mortal {
   struct Record {
     address provider;
     bytes32 identity;
-    uint16 category;
-    uint16 state;
+    uint16  category;
+    uint16  state;
     uint256 fee;
     uint256 timestamp;
-    bytes32 commit;
   }
 
   address public owner;
@@ -28,17 +27,13 @@ contract CreditBook is owned, mortal {
     return index.length;
   }
 
-  function getProvider(bytes32 commit) constant returns (address) {
-    return records[commit].provider;
-  }
-
   function submit(bytes32 user, uint16 category, uint16 state, uint256 fee, uint256 timestamp, bytes32 commit) external {
     if(user == bytes32(0x0)) throw;
     if(timestamp == 0) throw;
     if(records[commit].timestamp != 0) throw; // commit must be unique
 
     index.push(commit);
-    records[commit] = Record(msg.sender, user, category, state, fee, timestamp, commit);
+    records[commit] = Record(msg.sender, user, category, state, fee, timestamp);
 
     NewRecord(user, category, state, fee, timestamp, msg.sender, index.length-1);
   }
