@@ -7,7 +7,7 @@
   <link href="./app.css" rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
 </head>
-<body>
+<body ng-app="Nevermore">
   <header class="navbar">
     <a class="link" href="">SETTING</a>
     <a class="link" href="">HISTORY</a>
@@ -15,98 +15,76 @@
 
   <main class="main">
     <h1 class="slogan">NEVER MORE</h1>
-    <form class="search" action="">
-      <div class="form-group">
-        <input class="form-control" type="text" placeholder="Search">
-        <button class="btn btn-primary-outline upload">Upload</button>
-      </div>
-    </form>
 
-    <section class="info">
-      <div class="profile">
-        <img class="avatar" src="images/avatar.svg" alt="">
-        <p class="identity">ID:445281199xxxx9332xxc</p>
-      </div>
+    <div ng-controller="SearchCtrl">
+      <form class="search" action="">
+        <div class="form-group">
+          <input class="form-control" type="text" ng-model="query" placeholder="Search">
+          <button class="btn btn-primary-outline upload">Upload</button>
+        </div>
+      </form>
 
-      <canvas id="myChart" class="radar"></canvas>
 
-      <div class="prompt">
-        <p class="description">
-          Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous
-        </p>
+      <section class="table-container" ng-if="query.length > 0">
+        <table class="table">
+          <thead>
+              <tr>
+                <th><input type="checkbox"></th>
+                <th>Hash</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Seller</th>
+                <th>Seller Reputation</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-        <button class="btn btn-primary-outline purchase">purchase</button>
-      </div>
+            <tbody>
+              <tr class="ban" ng-repeat="cr in creditRecords | filter: {identity: query}">
+                <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
+                <td class="hash">{{cr.id | limitTo: 8 }}</td>
+                <!-- <td class="type">Credit Loan</td> -->
+                <td class="type">{{ cr.category }}</td>
+                <td class="status">On Going</td>
+                <td class="seller">ABC</td>
+                <td class="seller-reputation">10</td>
+                <td class="price">1002</td>
+                <td class="action uploaded">View</td>
+              </tr>
+            </tbody>
+        </table>
 
-    </section>
+        <div class="checkout">
+          <div class="sum">
+            <p class="price">￥1,193,62</p>
+            <p class="description">36 ITEMS</p>
+          </div>
 
-    <section class="table-container">
-      <table class="table">
-        <thead>
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>ID</th>
-              <th>Status</th>
-              <th>Type</th>
-              <th>Action</th>
-              <th>Hash</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr class="ban">
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status bad-debt">bad debt</td>
-              <td>Fish</td>
-              <td class="action uploaded">Uploade</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-
-            <tr class="ban">
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status advance">advance</td>
-              <td>Fish</td>
-              <td class="action ban">Ban</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status applying">applying</td>
-              <td>Fish</td>
-              <td class="action buy">Buy</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status loaning">loaning</td>
-              <td>Fish</td>
-              <td class="action buy">Buy</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-          </tbody>
-      </table>
-
-      <div class="checkout">
-        <div class="sum">
-          <p class="price">￥1,193,62</p>
-          <p class="description">36 ITEMS</p>
+          <button class="btn btn-primary-outline purchase">Purchase</button>
         </div>
 
-        <button class="btn btn-primary-outline purchase">Purchase</button>
-      </div>
+      </section>
+    </div>
 
-    </section>
+    <!-- <section class="info"> -->
+    <!--   <div class="profile"> -->
+    <!--     <img class="avatar" src="images/avatar.svg" alt=""> -->
+    <!--     <p class="identity">ID:445281199xxxx9332xxc</p> -->
+    <!--   </div> -->
+
+    <!--   <canvas id="myChart" class="radar"></canvas> -->
+
+    <!--   <div class="prompt"> -->
+    <!--     <p class="description"> -->
+    <!--       Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous -->
+    <!--     </p> -->
+
+    <!--     <button class="btn btn-primary-outline purchase">purchase</button> -->
+    <!--   </div> -->
+
+    <!-- </section> -->
+
 
     <section class="purchase-form">
       <h2 class="title">Purchase</h2>
