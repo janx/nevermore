@@ -225,7 +225,7 @@ angular.element(document).ready(function() {
       data.state,
       data.fee,
       data.timestamp,
-      {from: address}
+      provider: {from: address}
     )
   }
 
