@@ -43,7 +43,7 @@
             <tbody>
               <tr class="ban" ng-repeat="cr in creditRecords | filter: {identity: query}">
                 <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
-                <td class="hash">{{cr.id | limitTo: 8 }}</td>
+                <td class="hash">{{cr.commit | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>
                 <td class="status">{{ cr.state | stateFilter }}</td>
                 <td class="provider">{{ cr.providerName }}</td>
@@ -71,107 +71,103 @@
     <div class="modal-dialog purchase-form">
       <h2 class="title">Purchase</h2>
 
-      <form action="">
-        <input type="hidden">
+      <input type="hidden">
 
-        <p class="price">{{ getTotal() | currency:'￥' }}</p>
-        <button class="btn btn-primary-outline confirm">Confirm</button>
-      </form>
+      <p class="price">{{ getTotal() | currency:'￥' }}</p>
+      <button class="btn btn-primary-outline confirm">Confirm</button>
     </div>
   </section>
 
   <section class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-modal">
     <div class="modal-dialog upload-form"  ng-controller="CreateCtrl">
-      <form action="">
-        <h2 class="title">Upload Data</h2>
+      <h2 class="title">Upload Data</h2>
 
-        <h3 class="caption">Basic Data</h3>
+      <h3 class="caption">Basic Data</h3>
 
-        <div class="form-group">
-          <label for="">ID</label>
-          <input class="form-control" type="text">
+      <div class="form-group">
+        <label for="">ID</label>
+        <input class="form-control" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="">Category</label>
+        <select class="form-control c-select" id="exampleSelect1"
+          ng-model="creditRecord.category"
+          ng-init="creditRecord.category = creditRecord.category || categoryOptions[0].value"
+          ng-options="option.value as option.name for option in categoryOptions">
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="">状态</label>
+        <select class="form-control c-select" id="exampleSelect1">
+          <option>申请中</option>
+          <option>进行中</option>
+          <option>已完结</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="">价格</label>
+        <input class="form-control" type="text">
+      </div>
+
+      <h3 class="caption">Detail Data</h3>
+
+      <div class="form-group">
+        <label>违约情况</label>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" value="option1" checked>
+             违约
+          </label>
         </div>
 
-        <div class="form-group">
-          <label for="">Category</label>
-          <select class="form-control c-select" id="exampleSelect1"
-            ng-model="creditRecord.category"
-            ng-init="creditRecord.category = creditRecord.category || categoryOptions[0].value"
-            ng-options="option.value as option.name for option in categoryOptions">
-          </select>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" value="option1" checked>
+             未违约
+          </label>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="">状态</label>
-          <select class="form-control c-select" id="exampleSelect1">
-            <option>申请中</option>
-            <option>进行中</option>
-            <option>已完结</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="">本金</label>
+        <input class="form-control" type="text">
+      </div>
 
-        <div class="form-group">
-          <label for="">价格</label>
-          <input class="form-control" type="text">
-        </div>
+      <div class="form-group">
+        <label for="">年化利率</label>
+        <input class="form-control" type="text">
+      </div>
 
-        <h3 class="caption">Detail Data</h3>
+      <div class="form-group">
+        <label for="">期限</label>
+        <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years">
+      </div>
 
-        <div class="form-group">
-          <label>违约情况</label>
+      <div class="form-group">
+        <label for="">开始日期</label>
+        <input class="form-control" type="text" placeholder="e.g. 2015-01-09">
+      </div>
 
-          <div class="radio">
-            <label>
-              <input type="radio" name="optionsRadios" value="option1" checked>
-               违约
-            </label>
-          </div>
+      <div class="form-group">
+        <label for="">担保人</label>
+        <input class="form-control" type="text">
+      </div>
 
-          <div class="radio">
-            <label>
-              <input type="radio" name="optionsRadios" value="option1" checked>
-               未违约
-            </label>
-          </div>
-        </div>
+      <div class="form-group">
+        <label for="">抵押物</label>
+        <input class="form-control" type="text">
+      </div>
 
-        <div class="form-group">
-          <label for="">本金</label>
-          <input class="form-control" type="text">
-        </div>
+      <div class="form-group">
+        <label for="">描述</label>
+        <textarea class="form-control" name="name" rows="8" cols="40"></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="">年化利率</label>
-          <input class="form-control" type="text">
-        </div>
-
-        <div class="form-group">
-          <label for="">期限</label>
-          <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years">
-        </div>
-
-        <div class="form-group">
-          <label for="">开始日期</label>
-          <input class="form-control" type="text" placeholder="e.g. 2015-01-09">
-        </div>
-
-        <div class="form-group">
-          <label for="">担保人</label>
-          <input class="form-control" type="text">
-        </div>
-
-        <div class="form-group">
-          <label for="">抵押物</label>
-          <input class="form-control" type="text">
-        </div>
-
-        <div class="form-group">
-          <label for="">描述</label>
-          <textarea class="form-control" name="name" rows="8" cols="40"></textarea>
-        </div>
-
-        <button class="btn btn-primary-outline confirm" ng-click="createCreditBook()">Submit</button>
-      </form>
+      <button class="btn btn-primary-outline confirm" ng-click="createCreditBook()">Submit</button>
     </div>
   </section>
 
