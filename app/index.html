@@ -52,7 +52,7 @@
                 <td class="provider">{{ cr.providerName }} <p class="start">★★★★★</p></td>
                 <td class="price">{{ cr.fee | currency:'￥' }}</td>
                 <td class="action uploaded">
-                  <img class="eye {{reviewable(cr) ? 'open' : 'close'}}" ng-src="images/eye-{{reviewable(cr) ? 'open' : 'close'}}.svg" alt="">
+                  <img class="eye {{reviewable(cr) ? 'open' : 'close'}}" ng-src="images/eye-{{reviewable(cr) ? 'open' : 'close'}}.svg" ng-click="showDetailData(cr.commit)" alt="">
                 </td>
               </tr>
             </tbody>
@@ -247,6 +247,57 @@
       </div>
     </div>
   </section>
+
+
+  <section class="modal fade" id="detail-data-modal" tabindex="-1" role="dialog" aria-labelledby="result-modal"></section>
+
+  <script id="detail-data-template" type="text/x-handlebars-template">
+    <div class="modal-dialog purchase-result">
+      <div class="info">
+        <div class="profile">
+          <img class="avatar" src="images/avatar.svg" alt="">
+          <p class="identity">ID: {{identity}}</p>
+        </div>
+
+        <canvas id="myChart" class="radar"></canvas>
+
+        <div class="prompt">
+          <div class="description">
+            <h3 class="title">information understanding</h3>
+            <p>
+              <b>Trustworthiness</b> is the main parameter that characterizes risk factor of the borrower.
+              This is the key information, and thereby is triple-weighted in the diagram.
+            </p>
+
+            <p><b>History length</b> represents the quantity and time-span of the credit records.  </p>
+
+            <p><b>Provider reputation</b> indicates the accuracy of the information source.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="item">
+          <p class="default no">Default: {{default}}</p>
+          <p>Principal: {{principal}}</p>
+          <p>Annualized Rate: {{rate}}</p>
+          <p>Guarantor: {{guarantor}}</p>
+        </div>
+
+        <div class="item">
+          <p>Type: credit loan</p>
+          <p>Status: applying</p>
+          <p>Deadline: 3 years</p>
+          <p>Start Date: {{ start_date }}</p>
+        </div>
+
+        <div class="item description">
+          <h3 class="title">Description</h3>
+          <p>{{ desc }}</p>
+        </div>
+      </div>
+    </div>
+  </script>
 
   <div class="mask"></div>
 </body>

@@ -164,6 +164,16 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
   }
 
+  var source = $("#detail-data-template").html();
+  var template = Handlebars.compile(source);
+  $scope.showDetailData = function(commit) {
+    var data = localStorage.getItem(commit);
+    if (data) {
+      var html = template(angular.fromJson(data));
+      $('#detail-data-modal').html(html).modal('show');
+    }
+  }
+
   var cart = $scope.cart = [];
 
   $scope.changeCart = function($event, cr) {
@@ -260,6 +270,8 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 
     localStorage.setItem(commit, angular.toJson(data));
 
+    // TODO: reset form after create
+
     credit_book.submit(
       encodeToBytes32(data.identity),
       data.category,
@@ -273,11 +285,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
     });
 
     // close upload modal
-
     $('#upload-modal').modal('hide');
-
-    // TODO: cleanup after create
-    // TODO: store detail data to localStorage
   }
 
 }]);
