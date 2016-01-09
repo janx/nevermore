@@ -15,6 +15,10 @@ var toBytes32 = function(hex) {
   return '0x'+hexPadding(hex, 64);
 };
 
+var fromBytes32 = function(hex) {
+  return hex.replace(/^(0x0*)/, '')
+};
+
 var toAddress = function(hex) {
   return '0x'+hexPadding(hex, 40);
 };
