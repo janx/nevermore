@@ -8,7 +8,9 @@
       "javascripts/lib/jquery.js",
       "javascripts/lib/jquery-tiny-pubsub.js",
       "javascripts/lib/angular.js",
+      "javascripts/lib/transition.js",
       "javascripts/lib/modal.js",
+      "javascripts/index.js",
       "javascripts/app.js"
     ],
     "app.css": [

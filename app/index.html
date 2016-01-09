@@ -20,10 +20,9 @@
       <form class="search" action="">
         <div class="form-group">
           <input class="form-control" type="text" ng-model="query" placeholder="Search">
-          <button class="btn btn-primary-outline upload">Upload</button>
+          <button class="btn btn-primary-outline upload" data-toggle="modal" data-target="#upload-modal">Upload</button>
         </div>
       </form>
-
 
       <section class="table-container" ng-if="query.length > 0">
         <table class="table">
@@ -44,7 +43,7 @@
             <tbody>
               <tr class="ban" ng-repeat="cr in creditRecords | filter: {identity: query}">
                 <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
-                <td class="hash">{{cr.id | limitTo: 8 }}</td>
+                <td class="hash">{{cr.commit | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>
                 <td class="status">{{ cr.state | stateFilter }}</td>
                 <td class="provider">{{ cr.providerName }}</td>
@@ -64,50 +63,31 @@
 
           <button class="btn btn-primary-outline purchase" ng-click="buy()" data-toggle="modal" data-target="#purchase-modal">Purchase</button>
         </div>
-
       </section>
     </div>
+  </main>
 
-    <!-- <section class="info"> -->
-    <!--   <div class="profile"> -->
-    <!--     <img class="avatar" src="images/avatar.svg" alt=""> -->
-    <!--     <p class="identity">ID:445281199xxxx9332xxc</p> -->
-    <!--   </div> -->
+  <section class="modal fade" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
+    <div class="modal-dialog purchase-form">
+      <h2 class="title">Purchase</h2>
 
-    <!--   <canvas id="myChart" class="radar"></canvas> -->
+      <input type="hidden">
 
-    <!--   <div class="prompt"> -->
-    <!--     <p class="description"> -->
-    <!--       Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous -->
-    <!--     </p> -->
+      <p class="price">{{ getTotal() | currency:'￥' }}</p>
+      <button class="btn btn-primary-outline confirm">Confirm</button>
+    </div>
+  </section>
 
-    <!--     <button class="btn btn-primary-outline purchase">purchase</button> -->
-    <!--   </div> -->
-
-    <!-- </section> -->
-
-    <section class="modal fade purchase-form" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
-      <div class="modal-dialog">
-        <h2 class="title">Purchase</h2>
-
-        <form action="">
-          <input type="hidden">
-
-          <p class="price">{{ getTotal() | currency:'￥' }}</p>
-          <button class="btn btn-primary-outline confirm">Confirm</button>
-        </form>
-      </div>
-    </section>
-
-    <section class="upload-form" ng-controller="CreateCtrl">
+  <section class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-modal">
+    <div class="modal-dialog upload-form"  ng-controller="CreateCtrl">
       <h2 class="title">Upload Data</h2>
 
       <h3 class="caption">Basic Data</h3>
 
-      <!-- <div class="form-group"> -->
-      <!--   <label for="">ID</label> -->
-      <!--   <input class="form-control" type="text"> -->
-      <!-- </div> -->
+      <div class="form-group">
+        <label for="">ID</label>
+        <input class="form-control" type="text">
+      </div>
 
       <div class="form-group">
         <label for="">Category</label>
@@ -188,8 +168,8 @@
       </div>
 
       <button class="btn btn-primary-outline confirm" ng-click="createCreditBook()">Submit</button>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <div class="mask"></div>
 </body>
