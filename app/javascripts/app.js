@@ -302,7 +302,7 @@ angular.element(document).ready(function() {
 
   // flash
   $.subscribe('notice', function(event, notice){
-    alert(notice);
+    toastr.info(notice)
   });
 
   $.subscribe('Response:new', function(event, data) {
