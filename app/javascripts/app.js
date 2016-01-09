@@ -110,7 +110,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     return total;
   }
   $scope.buy = function() {
-    alert('buy successful');
+    // TODO: process the order payment
   }
 
   // $.subscribe('CreditBook:create', function(event, data){

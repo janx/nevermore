@@ -50,7 +50,7 @@
                 <td class="provider">{{ cr.providerName }}</td>
                 <td class="provider-reputation">{{ cr.providerReputation }}</td>
                 <td class="date">{{ cr.timestamp * 1000 | date: 'yyyy-MM-dd' }}</td>
-                <td class="price">{{ cr.fee | currency:"CNY" }}</td>
+                <td class="price">{{ cr.fee | currency:'￥' }}</td>
                 <td class="action uploaded">View</td>
               </tr>
             </tbody>
@@ -58,11 +58,11 @@
 
         <div class="checkout">
           <div class="sum">
-            <p class="price">￥1,193,62</p>
-            <p class="description">36 ITEMS</p>
+            <p class="price">{{ getTotal() | currency: '￥' }}</p>
+            <p class="description">{{ cart.length }} ITEMS</p>
           </div>
 
-          <button class="btn btn-primary-outline purchase">Purchase</button>
+          <button class="btn btn-primary-outline purchase" ng-click="buy()">Purchase</button>
         </div>
 
       </section>
@@ -93,7 +93,7 @@
       <form action="">
         <input type="hidden">
 
-        <p class="price">￥1,193,62</p>
+        <p class="price">{{ getTotal() | currency:'￥' }}</p>
         <button class="btn btn-primary-outline confirm">Confirm</button>
       </form>
     </section>
