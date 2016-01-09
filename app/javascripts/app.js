@@ -44,52 +44,11 @@ var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
 
-  $scope.creditRecords = [
-    {
-      commit: 'ccb5c3f944732008d5c8b13a6c928f673bee8126',
-      identity: '111111111111111111',
-      category: 0,
-      state: 0,
-      providerName: 'Firm 1',
-      providerReputation: 7,
-      fee: 10,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    },
-    {
-      commit: '8e6d63757c4aef7808850728f0c0520a4cce3755',
-      identity: '111111111111111111',
-      category: 1,
-      state: 1,
-      providerName: 'Firm 2',
-      providerReputation: 8,
-      fee: 20,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    },
-    {
-      commit: 'dd248eae48a38df07eee39e0d5bb7d11ad885f13',
-      identity: '111111111111111111',
-      category: 2,
-      state: 2,
-      providerName: 'Firm 3',
-      providerReputation: 9,
-      fee: 30,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    },
-    {
-      commit: 'aac65e92e5c17278a2df111dc17042f65a8aca56',
-      identity: '111111111111111111',
-      category: 1,
-      state: 1,
-      providerName: 'Firm 4',
-      providerReputation: 10,
-      fee: 40,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    }
-  ]
+  $scope.creditRecords = []
+
+  $.subscribe('CreditBook:list', function() {
+    $scope.creditRecords.concat(window.credit_records);
+  });
 
   $scope.cart = cart = [];
 
@@ -117,7 +76,8 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
   $scope.buy = function() {
     var list = [];
     for (var i=0; i < cart.length; i ++) {
-      list.push(cart[i].commit);
+      item = cart[i];
+      list.push({commit: item.commit, fee: item.fee});
     }
 
     $.publish('CreditRecord:buy', {list: list});
