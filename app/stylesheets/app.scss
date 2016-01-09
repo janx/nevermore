@@ -20,12 +20,11 @@ body {
   width: 100%;
   height: 100%;
   font-family: 'Lato', sans-serif;
-  // background: url('../images/chain.png') no-repeat center center fixed;
-  // background-size: cover;
 
   h1, h2, h3,
   p, span, a, div, table {
-    font-weight: 300;
+    // font-weight: 300;
+    color: #999;
   }
 }
 
@@ -65,6 +64,7 @@ body {
 
   .slogan {
     font-size: 36px;
+    font-weight: 100;
     text-align: center;
   }
 
@@ -109,6 +109,7 @@ body {
   .table {
     z-index: 10;
     position: relative;
+    color: #999;
 
     .status {
       &.applying { color: #0073DF; }
@@ -156,6 +157,18 @@ body {
 
     .purchase {
 
+    }
+  }
+
+  .start {
+    color: #999;
+  }
+
+  .eye {
+    width: 24px;
+    margin-top: 9px;
+    &.open {
+      cursor: pointer;
     }
   }
 }
