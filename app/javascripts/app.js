@@ -52,8 +52,6 @@ window.generageData = function() {
   for (var i=1; i < data.length; i++) {
     window.credit_records.push(data[i]);
   }
-
-  $.publish('CreditBook:list');
 }
 
 // Utils methods
@@ -129,13 +127,9 @@ var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
 
-  $scope.creditRecords = []
-
-  $.subscribe('CreditBook:list', function() {
-    $.each(window.credit_records, function(index, value){
-      $scope.creditRecords.push(value);
-    });
-  });
+  $scope.creditRecords = function() {
+    return window.credit_records;
+  }
 
   $scope.cart = cart = [];
 
