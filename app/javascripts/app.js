@@ -130,6 +130,12 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
     {value: 1, name: 'Collateral Loan'},
     {value: 2, name: 'Guaranteed Loan'}
   ];
+  $scope.stateOptions = [
+    {value: 0, name: 'Applying'},
+    {value: 1, name: 'Ongoing'},
+    {value: 2, name: 'Complete'}
+  ]
+
   $scope.creditRecord = creditRecord = {};
 
   $scope.createCreditBook = function() {
