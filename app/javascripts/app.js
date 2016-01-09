@@ -305,6 +305,19 @@ angular.element(document).ready(function() {
     alert(notice);
   });
 
+  $.subscribe('Response:new', function(event, data) {
+
+   var id = '';
+   $.each(window.requests, function(index, request) {
+     if(request.commit == data.commit) {
+       id = request.id;
+     }
+   });
+
+   // FIXME, it's not work
+   order_book.submitResponse(id, data.secret, data.content, {from: address});
+  });
+
 
   // initialize credit records
   credit_book.all({}).then(function(records){
@@ -464,7 +477,8 @@ angular.element(document).ready(function() {
 
     var data = localStorage.getItem(commit);
     if (data) {
-      $.publish('Response:create' {commit: commit, secret: 'eee', content: data});
+      // FIXME: secret should not be hard code.
+      $.publish('Response:new', {commit: commit, secret: 'eeee', content: data});
     }
   });
 
