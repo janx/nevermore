@@ -16,7 +16,7 @@ contract CreditBook is owned, mortal {
   address public owner;
 
   bytes32[] index;
-  mapping(bytes32 => Record) records;
+  mapping(bytes32 => Record) public records;
 
   event NewRecord(bytes32 indexed user, uint16 indexed category, uint16 indexed state, uint256 fee, uint256 timestamp, address provider, uint256 id);
 
@@ -26,6 +26,10 @@ contract CreditBook is owned, mortal {
 
   function size() constant returns (uint256) {
     return index.length;
+  }
+
+  function getProvider(bytes32 commit) constant returns (address) {
+    return records[commit].provider;
   }
 
   function submit(bytes32 user, uint16 category, uint16 state, uint256 fee, uint256 timestamp, bytes32 commit) external {
