@@ -204,8 +204,18 @@ body {
 }
 
 .upload-form {
+  width: 720px;
+  padding: 2em 10em;
+
   form {
     text-align: left;
+
+    .caption {
+      padding-bottom: 1em;
+      border-bottom: 1px solid #ececec;
+      margin-bottom: 1em;
+      text-align: center;
+    }
 
     .form-group {
       label {
