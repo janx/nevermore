@@ -42,7 +42,7 @@ contract OrderBook is owned, mortal {
     uint16  state;
     uint256 fee;
     uint256 timestamp;
-    (provider, user, category, state, fee, timestamp) = CreditBook(creditBook).records(commit);
+    (provider, user, category, state, fee, timestamp) = CreditBook(creditBook).get(commit);
 
     if(provider == 0x0) throw;
     if(msg.value < fee) throw; // TODO: should we refund extra fee?
