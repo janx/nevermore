@@ -194,6 +194,13 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
 
     $.publish('CreditRecord:buy', {list: list});
+
+    $('#purchase-modal').modal('hide');
+
+    for (var i=0; i < cart.length; i++) {
+      cart[i].orderstate = 1;
+    }
+
     $scope.cleanup();
   }
 
