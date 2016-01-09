@@ -123,9 +123,20 @@ contract OrderBook is owned, mortal {
     }
     respEncryptedData[id] = encryptedData;
 
-    NewResponse(id+1);
+    // pay record provider
+    bytes32 commit = reqCommits[id];
 
-    // TODO: transfer fee to Payment contract
+    address recProvider;
+    bytes32 recIdentity;
+    uint16 recCategory;
+    uint16 recState;
+    uint256 recFee;
+    uint256 recTimestamp;
+
+    (recProvider, recIdentity, recCategory, recState, recFee, recTimestamp) = CreditBook(creditBook).get(commit);
+    recProvider.send(reqFees[id]);
+
+    NewResponse(id+1);
   }
 
 }
