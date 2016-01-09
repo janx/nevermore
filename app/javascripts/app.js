@@ -142,9 +142,7 @@ angular.element(document).ready(function() {
       order_book.getAllRequests({}).
         then(function(reqProviders, reqFroms, reqCommits){
         });
-
     });
-
 
   // watch the credit records.
 
@@ -161,15 +159,6 @@ angular.element(document).ready(function() {
     $.publish('CreditBook:create', book);
   });
 
-  // watch the requests
-
-  request_book = OrderBook.deployed();
-  request_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
-    var request = {
-    }
-  });
-
-
   credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
   credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
@@ -181,7 +170,7 @@ angular.element(document).ready(function() {
     for(var i = 0; i < records.length; i++) {
       var fee = records[i].fee;
       var commit = records[i].commit;
-
+      order_book.submitRequest(commit, {value: fee});
     }
   })
 
