@@ -9,9 +9,7 @@
 </head>
 <body ng-app="Nevermore">
   <header class="navbar">
-    <!-- <h1 class="logo">Never More</h1> -->
     <img class="logo shake" src="./images/N.svg" alt="">
-    <!-- <button class="btn btn-primary-outline upload" data-toggle="modal" data-target="#upload-modal">Upload</button> -->
 
     <button class="button btn-primary-outline button--naira button--naira-up upload" data-toggle="modal" data-target="#upload-modal">
       <i class="button__icon icon icon-upload"></i>
@@ -19,15 +17,13 @@
     </button>
   </header>
 
-
-
   <main class="main">
-    <h1 class="slogan">NEVER MORE</h1>
+    <h1 class="slogan">NEVERMORE</h1>
 
     <div ng-controller="SearchCtrl">
       <form class="search" action="">
         <div class="form-group">
-          <input class="form-control" type="text" ng-model="query" placeholder="Search">
+          <input class="form-control" type="text" ng-model="query" placeholder="Type ID number to search">
         </div>
       </form>
 
@@ -36,28 +32,27 @@
           <thead>
               <tr>
                 <th><input type="checkbox"></th>
+                <th>ID</th>
                 <th>Hash</th>
                 <th>Category</th>
                 <th>State</th>
                 <th>Provider</th>
-                <th>Reputation</th>
-                <th>Upload Date</th>
                 <th>Price</th>
-                <th>Action</th>
+                <th>View</th>
               </tr>
             </thead>
 
             <tbody>
               <tr class="ban" ng-repeat="cr in creditRecords() | filter: {identity: query}">
                 <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
+                <td class="id">445281199xxxx36</td>
                 <td class="hash">{{cr.commit | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>
                 <td class="status">{{ cr.state | stateFilter }}</td>
-                <td class="provider">{{ cr.providerName }}</td>
-                <td class="provider-reputation">{{ cr.providerReputation }}</td>
-                <td class="date">{{ cr.timestamp * 1000 | date: 'yyyy-MM-dd' }}</td>
+                <td class="provider">{{ cr.providerName }} <p class="start">★★★★★</p></td>
                 <td class="price">{{ cr.fee | currency:'￥' }}</td>
-                <td class="action uploaded">View</td>
+                <td class="action uploaded"><img class="eye open" src="images/eye-open.svg" alt=""></td>
+                <td class="action uploaded"><img class="eye close" src="images/eye-close.svg" alt=""></td>
               </tr>
             </tbody>
         </table>
