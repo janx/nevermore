@@ -3,6 +3,9 @@ import 'mortal';
 
 contract CreditBook is owned, mortal {
 
+  enum Categories { CreditLoan, CollateralLoan, GuaranteedLoan }
+  enum States { Applying, Ongoing, Complete }
+
   struct Record {
     address provider;
     bytes32 identity;
