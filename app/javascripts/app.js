@@ -261,7 +261,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
     localStorage.setItem(commit, angular.toJson(data));
 
     credit_book.submit(
-      encodeToBytes32(metaData.identity),
+      encodeToBytes32(data.identity),
       data.category,
       data.state,
       data.fee,
