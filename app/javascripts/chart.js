@@ -135,7 +135,7 @@ $(document).ready(function() {
   }
 
   var data = {
-      labels: ["身份特质", "履约能力", "信用历史", "人脉关系", "行为偏好"],
+      labels: ["Trustworthiness", "History length", "Trustworthiness", "Provider reputation", "Trustworthiness"],
       datasets: [
           {
               label: "My Second dataset",
