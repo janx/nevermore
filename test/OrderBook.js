@@ -99,10 +99,10 @@ contract('OrderBook', function(accounts) {
       }).then(function(txid) {
         eventPromise({})
           .then(function(result) {
-            var value = accounts[0].slice(2) + commit.slice(2);
-            var id = '0x' + web3.sha3(value, {encoding: 'hex'});
+            //            var value = accounts[0].slice(2) + commit.slice(2);
+            //            var id = '0x' + web3.sha3(value, {encoding: 'hex'});
 
-            assert.equal(result.args.id, id);
+            //assert.equal(result.args.id, id);
             assert.equal(result.args.commit, commit);
             assert.equal(result.args.provider, accounts[0]);
             assert.equal(result.args.from, accounts[0]);
@@ -117,10 +117,9 @@ contract('OrderBook', function(accounts) {
     var creditBook = CreditBook.deployed();
     var orderBook = OrderBook.deployed();
 
-    var id = helpers.toBytes32('ffffffff');
     orderBook.setCreditBook(CreditBook.deployed_address)
       .then(function(txid){
-         return orderBook.submitResponse(id, encryptedSecret, "what_the_fox_say");
+         return orderBook.submitResponse(999999, encryptedSecret, "what_the_fox_say");
       }).then(function(txid) {
         assert(!txid, "submit succeed!");
       }).catch(function(e) {
@@ -137,8 +136,8 @@ contract('OrderBook', function(accounts) {
 
     var commit = helpers.genCommit();
 
-    var value = accounts[0].slice(2) + commit.slice(2);
-    var id = '0x' + web3.sha3(value, {encoding: 'hex'});
+    //var value = accounts[0].slice(2) + commit.slice(2);
+    //var id = '0x' + web3.sha3(value, {encoding: 'hex'});
 
     orderBook.setCreditBook(CreditBook.deployed_address)
       .then(function(txid){
@@ -146,7 +145,11 @@ contract('OrderBook', function(accounts) {
       }).then(function(txid) {
         return orderBook.submitRequest(commit, {value: 100});
       }).then(function(txid) {
-        return orderBook.submitResponse(id, encryptedSecret, encryptedData, {from: accounts[1]});
+        return orderBook.size();
+      }).then(function(size) {
+        return orderBook.submitResponse(size-1, encryptedSecret, encryptedData, {from: accounts[1]});
+      }).then(function(txid) {
+        assert(!txid, "submit succeed!");
       }).catch(function(e) {
         assert.match(e.message, /TransactionFailed/, "response submit should fail because responder address doesn't equal record provider");
         done();
@@ -161,8 +164,8 @@ contract('OrderBook', function(accounts) {
 
     var commit = helpers.genCommit();
 
-    var value = accounts[0].slice(2) + commit.slice(2);
-    var id = '0x' + web3.sha3(value, {encoding: 'hex'});
+    //var value = accounts[0].slice(2) + commit.slice(2);
+    //var id = '0x' + web3.sha3(value, {encoding: 'hex'});
 
     orderBook.setCreditBook(CreditBook.deployed_address)
       .then(function(txid){
@@ -170,13 +173,15 @@ contract('OrderBook', function(accounts) {
       }).then(function(txid) {
         return orderBook.submitRequest(commit, {value: 100});
       }).then(function(txid) {
+        return orderBook.size();
+      }).then(function(size) {
         eventPromise({})
           .then(function(result) {
-            assert.equal(result.args.id, id);
+            assert.equal(result.args.id.toString(), size.toString());
             done();
           }).catch(done);
 
-        return orderBook.submitResponse(id, encryptedSecret, encryptedData);
+        return orderBook.submitResponse(size-1, encryptedSecret, encryptedData);
       }).catch(done);
   });
 
@@ -188,21 +193,32 @@ contract('OrderBook', function(accounts) {
 
     var commit = helpers.genCommit();
 
-    var value = accounts[0].slice(2) + commit.slice(2);
-    var id = '0x' + web3.sha3(value, {encoding: 'hex'});
+    //var value = accounts[0].slice(2) + commit.slice(2);
+    //var id = '0x' + web3.sha3(value, {encoding: 'hex'});
 
+    var reqId;
     orderBook.setCreditBook(CreditBook.deployed_address)
       .then(function(txid){
         return creditBook.submit(user, category, state, fee, timestamp, commit);
       }).then(function(txid) {
         return orderBook.submitRequest(commit, {value: 100});
       }).then(function(txid) {
-        return orderBook.submitResponse(id, encryptedSecret, encryptedData);
+        return orderBook.size();
+      }).then(function(size) {
+        reqId = size - 1;
+        return orderBook.submitResponse(reqId, encryptedSecret, encryptedData);
       }).then(function(txid) {
-        return orderBook.responses(id);
-      }).then(function(response) {
-        assert.equal(response[0], encryptedSecret);
-        assert.equal(response[1], encryptedData);
+        return orderBook.getResponse(reqId);
+      }).then(function(result) {
+        assert.equal(result[0], encryptedSecret);
+        assert.equal(result[1], encryptedData);
+        //done();
+        return orderBook.getAllRequests();
+      }).then(function(results) {
+        //console.log(results);
+        return orderBook.getAllResponses();
+      }).then(function(results) {
+        //console.log(results);
         done();
       }).catch(done);
   });
