@@ -121,88 +121,88 @@ angular.element(document).ready(function() {
 
 
   // initialize credit records
-  credit_book.all({}).
-    then(function(records){
-      if(records[0].length > 0 ) {
+  credit_book.all({}).  then(function(records){
+    if(records[0].length > 0 ) {
 
-        for(var i=0; i<records[0].length; i++) {
-          record = {};
-          record.provider = records[0][i].toString();
-          record.identity = records[1][i].toString();
-          record.category = records[2][i].toNumber();
-          record.state = records[3][i].toNumber();
-          record.fee = records[4][i].toNumber();
-          record.timestamp = records[5][i].toNumber();
-          record.commit = records[6][i].toString();
-          record.orderstate = 0;
-          window.credit_records.push(record);
-        }
-
-        $.publish("CreditBook:list");
+      for(var i=0; i<records[0].length; i++) {
+        record = {};
+        record.provider = records[0][i].toString();
+        record.identity = records[1][i].toString();
+        record.category = records[2][i].toNumber();
+        record.state = records[3][i].toNumber();
+        record.fee = records[4][i].toNumber();
+        record.timestamp = records[5][i].toNumber();
+        record.commit = records[6][i].toString();
+        record.orderstate = 0;
+        window.credit_records.push(record);
       }
-    }).then(function(){
-      // initialize requests
-      order_book.getAllRequests({}).
-        then(function(result){
-          for(var i=0; i < result[0].length; i++) {
-            request = {};
-            request.provider = result[0][i];
-            request.from = result[1][i];
-            request.commit = result[2][i];
-            window.requests.push(request);
 
-            related = false;
-            $.each(web3.eth.accounts, function(index, value) {
-              if(value === request.from) {
-                related = true;
-              }
-            });
+      $.publish("CreditBook:list");
+    }
+  }).then(function(){
+    // initialize requests
+    order_book.getAllRequests({}).then(function(result){
+      for(var i=0; i < result[0].length; i++) {
+        request = {};
+        request.id = i;
+        request.provider = result[0][i];
+        request.from = result[1][i];
+        request.commit = result[2][i];
+        window.requests.push(request);
 
-            if(related) {
-              $.each(window.credit_records, function(index, record) {
-                if(record.commit === request.commit){
-                  record.orderstate = 1;
-                }
-              });
-            }
+        related = false;
+        $.each(web3.eth.accounts, function(index, value) {
+          if(value === request.from) {
+            related = true;
           }
-        }).then(function(result){
-          // debugger
-          // merge response
         });
-    });
 
-    // watch the credit records.
-
-    credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
-      var book = {
-        identity: result.args.user,
-        category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
-        state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
-        fee: result.args.fee.toNumber(),
-        timestamp: result.args.timestamp.toString(), // unix timestamp
-        provider: result.args.provider
-      };
-
-      $.publish('CreditBook:create', book);
-    });
-
-    credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-    credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-
-
-    // buy
-    //
-    $.subscribe('CreditRecord:buy', function(event, data){
-      records = data.list
-      for(var i = 0; i < records.length; i++) {
-        var fee = records[i].fee;
-        var commit = records[i].commit;
-
-        order_book.submitRequest(commit, {value: fee, from: address});
+        if(related) {
+          $.each(window.credit_records, function(index, record) {
+            if(record.commit === request.commit){
+              record.orderstate = 1;
+            }
+          });
+        }
       }
-    })
+    }).then(function(result){
+      // debugger
+      // merge response
 
-    // Bootstrap Angualr module
-    angular.bootstrap(document, ['Nevermore']);
+    });
+  });
+
+  // watch the credit records.
+
+  credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
+    var book = {
+      identity: result.args.user,
+      category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
+      state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
+      fee: result.args.fee.toNumber(),
+      timestamp: result.args.timestamp.toString(), // unix timestamp
+      provider: result.args.provider
+    };
+
+    $.publish('CreditBook:create', book);
+  });
+
+  credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+
+
+  // buy
+  //
+  $.subscribe('CreditRecord:buy', function(event, data){
+    records = data.list
+    for(var i = 0; i < records.length; i++) {
+      var fee = records[i].fee;
+      var commit = records[i].commit;
+
+      order_book.submitRequest(commit, {value: fee, from: address});
+    }
+  })
+
+  // Bootstrap Angualr module
+  angular.bootstrap(document, ['Nevermore']);
 });
