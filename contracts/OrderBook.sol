@@ -27,6 +27,8 @@ contract OrderBook is owned, mortal {
   address[] reqProviders;
   address[] reqFroms;
   bytes32[] reqCommits;
+  uint256[] reqExpireDates;
+  uint256[] reqFees;
 
   bytes32[] respEncryptedSecrets;
   bytes[]   respEncryptedData;
@@ -62,7 +64,6 @@ contract OrderBook is owned, mortal {
     return (respEncryptedSecrets);
   }
 
-  // TODO: request timeout, refund on timeout
   function submitRequest(bytes32 commit) external {
     address provider;
     bytes32 user;
@@ -83,9 +84,22 @@ contract OrderBook is owned, mortal {
     reqProviders.push(provider);
     reqFroms.push(msg.sender);
     reqCommits.push(commit);
-    // TODO: record fee
+    reqExpireDates.push(now + 1 days);
+    reqFees.push(msg.value);
 
     NewRequest(provider, msg.sender, reqIds[rid], commit);
+  }
+
+  // requester call after request expired to get refund
+  function refund(uint256 id) external {
+    address provider = reqProviders[id];
+    if(provider != msg.sender) throw;
+
+    if(now > reqExpireDates[id]) {
+      reqFroms[id].send(reqFees[id]);
+
+      // TODO: penalty of responder
+    }
   }
 
   function submitResponse(uint256 id, bytes32 encryptedSecret, bytes encryptedData) external {
