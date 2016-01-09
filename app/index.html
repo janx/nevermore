@@ -45,7 +45,7 @@
                 <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
                 <td class="hash">{{cr.id | limitTo: 8 }}</td>
                 <!-- <td class="type">Credit Loan</td> -->
-                <td class="type">{{ cr.category }}</td>
+                <td class="type">{{ cr.category | categoryFilter }}</td>
                 <td class="status">On Going</td>
                 <td class="seller">ABC</td>
                 <td class="seller-reputation">10</td>

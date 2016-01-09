@@ -1,3 +1,23 @@
+var filters = angular.module('neverMoreFilters', [])
+filters.filter('categoryFilter', function() {
+  return function(input) {
+    var result = "";
+    switch(input) {
+      case 0:
+        result = "Credit Loan";
+        break;
+      case 1:
+        result = "Category 1"
+        break;
+      case 2:
+        resrlt = "Category 2"
+        break;
+    }
+
+    return result;
+  };
+});
+
 var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
