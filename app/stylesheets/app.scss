@@ -27,13 +27,27 @@ body {
 }
 
 .navbar {
+  position: relative;
   width: 100%;
-  height: 56px;
+  height: 76px;
   padding: 0 4em;
   border-bottom: 1px solid #ececec;
   background-color: #fff;
-  line-height: 56px;
-  text-align: right;
+  line-height: 76px;
+  text-align: center;
+
+  .logo {
+    width: 50px;
+    height: 62.5px;
+    margin-top: 18px;
+    line-height: 76px;
+  }
+
+  .upload {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+  }
 
   .link {
     padding-left: 1em;
