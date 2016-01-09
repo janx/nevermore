@@ -7,6 +7,7 @@
 @import "components/form";
 @import "components/button";
 @import "components/table";
+@import "components/modal";
 
 @import "animation";
 
@@ -181,11 +182,11 @@ body {
   }
 }
 
-.purchase-form,
-.upload-form {
-  @include center-block();
+.purchase-form {
   width: 360px;
+  height: 240px;
   padding: 2em;
+  margin: 0 auto;
   border: 1px solid #CAE5F9;
   margin-bottom: 2em;
   background-color: #fff;
@@ -206,6 +207,15 @@ body {
 .upload-form {
   width: 720px;
   padding: 2em 10em;
+  margin: 0 auto;
+  border: 1px solid #CAE5F9;
+  margin-bottom: 2em;
+  background-color: #fff;
+  text-align: center;
+
+  .title {
+    margin-bottom: 1em;
+  }
 
   form {
     text-align: left;

@@ -115,6 +115,22 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     // TODO: process the order payment
   }
 
+}]);
+
+
+app.controller('CreateCtrl', ['$scope', function ($scope) {
+
+  $scope.categoryOptions = [
+    {value: 0, name: 'Credit Loan'},
+    {value: 1, name: 'Collateral Loan'},
+    {value: 2, name: 'Guaranteed Loan'}
+  ];
+  $scope.creditRecord = creditRecord = {};
+
+  $scope.createCreditBook = function() {
+    console.info(creditRecord);
+  }
+
   // $.subscribe('CreditBook:create', function(event, data){
   //   debugger
   // });
