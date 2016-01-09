@@ -64,22 +64,24 @@
             <p class="description">{{ cart.length }} ITEMS</p>
           </div>
 
-          <button class="btn btn-primary-outline purchase" ng-click="buy()" data-toggle="modal" data-target="#purchase-modal">Purchase</button>
+          <button class="btn btn-primary-outline purchase" data-toggle="modal" data-target="#purchase-modal">Purchase</button>
         </div>
       </section>
+
+      <section class="modal fade" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
+        <div class="modal-dialog purchase-form">
+          <h2 class="title">Purchase</h2>
+
+          <input type="hidden">
+
+          <p class="price">{{ getTotal() | currency:'￥' }}</p>
+          <button id="purchase-confirm" class="btn btn-primary-outline confirm" ng-click="buy()">Confirm</button>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <section class="modal fade" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
-    <div class="modal-dialog purchase-form">
-      <h2 class="title">Purchase</h2>
-
-      <input type="hidden">
-
-      <p class="price">{{ getTotal() | currency:'￥' }}</p>
-      <button id="purchase-confirm" class="btn btn-primary-outline confirm">Confirm</button>
-    </div>
-  </section>
 
   <section class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-modal">
     <div class="modal-dialog upload-form"  ng-controller="CreateCtrl">
