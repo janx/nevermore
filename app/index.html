@@ -85,8 +85,8 @@
       <h3 class="caption">Basic Data</h3>
 
       <div class="form-group">
-        <label for="">ID</label>
-        <input class="form-control" type="text">
+        <label for="">Identity</label>
+        <input class="form-control" type="text" ng-model="creditRecord.identity">
       </div>
 
       <div class="form-group">
@@ -99,11 +99,11 @@
       </div>
 
       <div class="form-group">
-        <label for="">状态</label>
-        <select class="form-control c-select" id="exampleSelect1">
-          <option>申请中</option>
-          <option>进行中</option>
-          <option>已完结</option>
+        <label for="">Status</label>
+        <select class="form-control c-select" id="exampleSelect1"
+          ng-model="creditRecord.state"
+          ng-init="creditRecord.state = creditRecord.state || stateOptions[0].value"
+          ng-options="option.value as option.name for option in stateOptions">
         </select>
       </div>
 

@@ -1,3 +1,5 @@
+window.credit_records = []
+
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
   return function(input) {
@@ -42,52 +44,13 @@ var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
 
-  $scope.creditRecords = [
-    {
-      commit: 'ccb5c3f944732008d5c8b13a6c928f673bee8126',
-      identity: '111111111111111111',
-      category: 0,
-      state: 0,
-      providerName: 'Firm 1',
-      providerReputation: 7,
-      fee: 10,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    },
-    {
-      commit: '8e6d63757c4aef7808850728f0c0520a4cce3755',
-      identity: '111111111111111111',
-      category: 1,
-      state: 1,
-      providerName: 'Firm 2',
-      providerReputation: 8,
-      fee: 20,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    },
-    {
-      commit: 'dd248eae48a38df07eee39e0d5bb7d11ad885f13',
-      identity: '111111111111111111',
-      category: 2,
-      state: 2,
-      providerName: 'Firm 3',
-      providerReputation: 9,
-      fee: 30,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    },
-    {
-      commit: 'aac65e92e5c17278a2df111dc17042f65a8aca56',
-      identity: '111111111111111111',
-      category: 1,
-      state: 1,
-      providerName: 'Firm 4',
-      providerReputation: 10,
-      fee: 40,
-      timestamp: 1452268704,
-      source: '43b2aa9c63ca995aa6766977fec06067'
-    }
-  ]
+  $scope.creditRecords = []
+
+  $.subscribe('CreditBook:list', function() {
+    $.each(window.credit_records, function(index, value){
+      $scope.creditRecords.push(value);
+    });
+  });
 
   $scope.cart = cart = [];
 
@@ -115,10 +78,11 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
   $scope.buy = function() {
     var list = [];
     for (var i=0; i < cart.length; i ++) {
-      list.push(cart[i].commit);
+      item = cart[i];
+      list.push({commit: item.commit, fee: item.fee});
     }
 
-    $.publish('CreditRecord:buy', list);
+    $.publish('CreditRecord:buy', {list: list});
   }
 }]);
 
@@ -130,6 +94,12 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
     {value: 1, name: 'Collateral Loan'},
     {value: 2, name: 'Guaranteed Loan'}
   ];
+  $scope.stateOptions = [
+    {value: 0, name: 'Applying'},
+    {value: 1, name: 'Ongoing'},
+    {value: 2, name: 'Complete'}
+  ]
+
   $scope.creditRecord = creditRecord = {};
 
   $scope.createCreditBook = function() {
@@ -143,10 +113,38 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 }]);
 
 angular.element(document).ready(function() {
-  var address = web3.eth.accounts[0]
+  var address = web3.eth.accounts[0];
+  var credit_book = CreditBook.deployed();
+  var order_book = OrderBook.deployed();
+
+
+  // initialize credit records
+  credit_book.all({}).
+    then(function(records){
+      if(records[0].length > 0 ) {
+
+        for(var i=0; i<records[0].length; i++) {
+          record = {};
+          record.provider = records[0][i].toString();
+          record.identity = records[1][i].toString();
+          record.category = records[2][i].toNumber();
+          record.state = records[3][i].toNumber();
+          record.fee = records[4][i].toNumber();
+          record.timestamp = records[5][i].toNumber();
+          record.commit = records[6][i].toString();
+          window.credit_records.push(record);
+        }
+
+        $.publish("CreditBook:list");
+      }
+    }).then(function(){
+      // initialize requests
+      order_book.getAllRequests({}).
+        then(function(reqProviders, reqFroms, reqCommits){
+        });
+    });
 
   // watch the credit records.
-  var credit_book = CreditBook.deployed();
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var book = {
@@ -161,17 +159,20 @@ angular.element(document).ready(function() {
     $.publish('CreditBook:create', book);
   });
 
-  // watch the requests
+  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
-  request_book = OrderBook.deployed();
-  request_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
-    var request = {
+
+  // buy
+  //
+  $.subscribe('CreditRecord:buy', function(event, data){
+    records = data.list
+    for(var i = 0; i < records.length; i++) {
+      var fee = records[i].fee;
+      var commit = records[i].commit;
+      order_book.submitRequest(commit, {value: fee});
     }
-  });
-
-
-  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  })
 
   // Bootstrap Angualr module
   angular.bootstrap(document, ['Nevermore']);
