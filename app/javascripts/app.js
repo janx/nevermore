@@ -151,6 +151,18 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
   }
 
+  $scope.reviewable = function(cr) {
+    if (cr.owner) {
+      return true;
+    }
+
+    if (cr.orderstate === 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   $scope.cart = cart = [];
 
   $scope.changeCart = function($event, cr) {

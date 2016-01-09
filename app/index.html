@@ -51,8 +51,9 @@
                 <td class="status">{{ cr.state | stateFilter }}</td>
                 <td class="provider">{{ cr.providerName }} <p class="start">★★★★★</p></td>
                 <td class="price">{{ cr.fee | currency:'￥' }}</td>
-                <td class="action uploaded"><img class="eye open" src="images/eye-open.svg" alt=""></td>
-                <td class="action uploaded"><img class="eye close" src="images/eye-close.svg" alt=""></td>
+                <td class="action uploaded">
+                  <img class="eye {{reviewable(cr) ? 'open' : 'close'}}" ng-src="images/eye-{{reviewable(cr) ? 'open' : 'close'}}.svg" alt="">
+                </td>
               </tr>
             </tbody>
         </table>
