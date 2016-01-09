@@ -394,6 +394,7 @@ angular.element(document).ready(function() {
     if(address === result.args.provider) {
       own = true
     }
+    //FIXME: Jan... fuck you!!! where is the commit.
 
     var book = {
       identity: decodeFromBytes32(result.args.user),
@@ -407,11 +408,16 @@ angular.element(document).ready(function() {
       owner: own
     };
 
+    var included = false
     $.each(window.credit_records, function(index, record) {
-      if(record.commit !== book.commit) {
-        window.credit_records.push(book);
+      if(record.commit === book.commit) {
+        included = true
       }
     });
+    if(!included) {
+      debugger
+      window.credit_records.push(book);
+    }
     $.publish('CreditBook:create', book);
   });
 
