@@ -190,7 +190,7 @@ angular.element(document).ready(function() {
       for(var i=0; i<records[0].length; i++) {
         record = {};
         record.provider = records[0][i].toString();
-        record.identity = records[1][i].toString();
+        record.identity = decodeFromBytes32(records[1][i].toString());
         record.category = records[2][i].toNumber();
         record.state = records[3][i].toNumber();
         record.fee = records[4][i].toNumber();
@@ -200,7 +200,6 @@ angular.element(document).ready(function() {
         window.credit_records.push(record);
       }
 
-      $.publish("CreditBook:list");
     }
   }).then(function(){
     // initialize requests
@@ -246,6 +245,7 @@ angular.element(document).ready(function() {
       });
       // merge response
 
+      $.publish("CreditBook:list");
     });
   });
 
@@ -267,14 +267,23 @@ angular.element(document).ready(function() {
   // watch request
   order_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
     var request = {
+      id: result.args.id.toNumber(),
+      provider: result.args.provider,
+      from: result.args.from,
+      commit: result.args.commit
     }
+
+    $.requests.push(request)
   });
 
 
 
-  // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-
+   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
 
 
