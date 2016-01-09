@@ -199,7 +199,21 @@ angular.element(document).ready(function() {
         }
       }
     }).then(function(result){
-      // debugger
+      order_book.getAllResponses({from: address}).then(function(result){
+        // order_book.submitResponse(2, 'ffff', "ffff", {from: address})
+        //
+        $.each(result, function(index, value) {
+          if(value !== "0x0000000000000000000000000000000000000000000000000000000000000000") {
+            var commit = window.requests[index].commit;
+            $.each(window.credit_records, function(index, value) {
+              if(value === commit) {
+                value.orderstate = 2;
+              }
+            });
+          }
+        });
+
+      });
       // merge response
 
     });
@@ -220,11 +234,21 @@ angular.element(document).ready(function() {
     $.publish('CreditBook:create', book);
   });
 
+  // watch request
+  order_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
+    var request = {
+    }
+  });
+
+
+
   // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
   // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
+
+
+
   // buy
-  //
   $.subscribe('CreditRecord:buy', function(event, data){
     records = data.list
     for(var i = 0; i < records.length; i++) {
