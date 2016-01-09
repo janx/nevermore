@@ -89,7 +89,6 @@ contract OrderBook is owned, mortal {
   }
 
   function submitResponse(uint256 id, bytes32 encryptedSecret, bytes encryptedData) external {
-    if(id == 0x0) throw;
     if(encryptedSecret == bytes32(0x0)) throw;
 
     address provider = reqProviders[id];
