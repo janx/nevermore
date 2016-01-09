@@ -46,8 +46,20 @@ contract OrderBook is owned, mortal {
     return reqCommits.length;
   }
 
+  function getRequest(uint256 id) constant returns (address, address, bytes32) {
+    return (reqProviders[id], reqFroms[id], reqCommits[id]);
+  }
+
   function getResponse(uint256 id) constant returns (bytes32, bytes) {
     return (respEncryptedSecrets[id], respEncryptedData[id]);
+  }
+
+  function getAllRequests() constant returns (address[], address[], bytes32[]) {
+    return (reqProviders, reqFroms, reqCommits);
+  }
+
+  function getAllResponses() constant returns (bytes32[]) {
+    return (respEncryptedSecrets);
   }
 
   // TODO: request timeout, refund on timeout

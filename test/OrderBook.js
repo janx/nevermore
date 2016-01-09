@@ -212,6 +212,13 @@ contract('OrderBook', function(accounts) {
       }).then(function(result) {
         assert.equal(result[0], encryptedSecret);
         assert.equal(result[1], encryptedData);
+        //done();
+        return orderBook.getAllRequests();
+      }).then(function(results) {
+        //console.log(results);
+        return orderBook.getAllResponses();
+      }).then(function(results) {
+        //console.log(results);
         done();
       }).catch(done);
   });
