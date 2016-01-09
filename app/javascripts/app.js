@@ -238,10 +238,10 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
   $scope.creditRecord = creditRecord = {};
 
   $scope.createCreditRecord = function() {
-    var hash = makeHash(creditRecord)
+    var commit = makeHash(creditRecord)
 
     var data = {
-      hash: hash,
+      commit: commit,
       identity: creditRecord.identity,
       category: creditRecord.category,
       state: creditRecord.state,
@@ -257,7 +257,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       desc: creditRecord.desc
     }
 
-    localStorage.setItem(hash, angular.toJson(data));
+    localStorage.setItem(commit, angular.toJson(data));
 
     credit_book.submit(
       encodeToBytes32(metaData.identity),
@@ -265,7 +265,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       data.state,
       data.fee,
       data.timestamp,
-      data.hash,
+      data.commit,
       {from: address}
     ).catch(function(e) {
       console.log(e)
@@ -440,6 +440,17 @@ angular.element(document).ready(function() {
       order_book.submitRequest(commit, {value: fee, from: address});
     }
   })
+
+  // deliver data to buyer
+  $.subscribe('Request:create', function(event, request) {
+    var commit = request.commit;
+    var pubkey = request.from;
+
+    var data = localStorage.getItem(commit);
+    if (data) {
+      $.publish('Response:create' {commit: commit, secret: 'eee', content: data});
+    }
+  });
 
   // Bootstrap Angualr module
   angular.bootstrap(document, ['Nevermore']);
