@@ -1,6 +1,21 @@
 window.credit_records = []
 window.requests = []
 
+window.Providers = {
+  "0x82a978b3f5962a5b0957d9ee9eef472ee55b42f1": {
+    name: "CreditSoft",
+    pubkey: "0xffff"
+  },
+  "0x7d577a597b2742b498cb5cf0c26cdcd726d39e6e": {
+    name: "SocialHard",
+    pubkey: "0xeeee"
+  },
+  "0xdceceaf3fc5c0a63d195d69b1a90011b7b19650d": {
+    name: "BlackScore",
+    pubkey: "0xdddd"
+  }
+};
+
 window.generageData = function() {
 
   var data = [
@@ -91,6 +106,17 @@ var decodeFromBytes32 = function(hex) {
   return web3.toAscii('0x' + fromBytes32(hex)).replace(/^_v1_/, '');
 }
 
+
+var encryptForProvider = function(provider, pt) {
+  // mock provider pubkey encrypt
+  var pubkey = Providers[provider].pubkey;
+  return encodeToBytes32(pubkey+aesKey+pt).slice(0,64);
+}
+
+var aesEncrypt = function(key, pt) {
+  // mock aes encryption
+  return encodeToBytes32("aes encrypted"+pt);
+}
 
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
@@ -325,6 +351,7 @@ angular.element(document).ready(function() {
      }
    });
 
+   console.log('Response:new', event, data);
    // FIXME, it's not work
    order_book.submitResponse(id, data.secret, data.content, {from: address});
   });
@@ -494,9 +521,13 @@ angular.element(document).ready(function() {
     var pubkey = request.from;
 
     var data = localStorage.getItem(commit);
+    console.log("New request received", request);
     if (data) {
-      // FIXME: secret should not be hard code.
-      $.publish('Response:new', {commit: commit, secret: 'eeee', content: data});
+      var aesKey = encodeToBytes32(''+newDate().getTime());
+      var secret = encryptForProvider(request.provider, aesKey);
+      var encryptedData = aesEncrypt(secret, data);
+      console.log("Auto respond to request: " + request);
+      $.publish('Response:new', {commit: commit, secret: secret, content: encryptedData});
     }
   });
 
