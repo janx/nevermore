@@ -48,6 +48,8 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       identity: '111111111111111111',
       category: 0,
       state: 0,
+      providerName: 'ABC',
+      providerReputation: 7,
       fee: 10,
       timestamp: 1452268704,
       source: '43b2aa9c63ca995aa6766977fec06067'
@@ -57,6 +59,8 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       identity: '111111111111111111',
       category: 0,
       state: 0,
+      providerName: 'ABC',
+      providerReputation: 8,
       fee: 20,
       timestamp: 1452268704,
       source: '43b2aa9c63ca995aa6766977fec06067'
@@ -66,6 +70,8 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       identity: '111111111111111111',
       category: 1,
       state: 1,
+      providerName: 'ABC',
+      providerReputation: 9,
       fee: 30,
       timestamp: 1452268704,
       source: '43b2aa9c63ca995aa6766977fec06067'
@@ -75,6 +81,8 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       identity: '111111111111111111',
       category: 1,
       state: 1,
+      providerName: 'ABC',
+      providerReputation: 10,
       fee: 40,
       timestamp: 1452268704,
       source: '43b2aa9c63ca995aa6766977fec06067'

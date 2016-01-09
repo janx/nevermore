@@ -33,8 +33,9 @@
                 <th>Hash</th>
                 <th>Type</th>
                 <th>Status</th>
-                <th>Seller</th>
-                <th>Seller Reputation</th>
+                <th>Provider</th>
+                <th>Reputation</th>
+                <th>Date</th>
                 <th>Price</th>
                 <th>Action</th>
               </tr>
@@ -46,9 +47,10 @@
                 <td class="hash">{{cr.id | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>
                 <td class="status">{{ cr.state | stateFilter }}</td>
-                <td class="seller">ABC</td>
-                <td class="seller-reputation">10</td>
-                <td class="price">1002</td>
+                <td class="provider">{{ cr.providerName }}</td>
+                <td class="provider-reputation">{{ cr.providerReputation }}</td>
+                <td class="date">{{ cr.timestamp * 1000 | date: 'yyyy-MM-dd' }}</td>
+                <td class="price">{{ cr.fee | currency:"CNY" }}</td>
                 <td class="action uploaded">View</td>
               </tr>
             </tbody>
