@@ -83,13 +83,12 @@ contract OrderBook is owned, mortal {
     reqProviders.push(provider);
     reqFroms.push(msg.sender);
     reqCommits.push(commit);
+    // TODO: record fee
 
     NewRequest(provider, msg.sender, reqIds[rid], commit);
   }
 
-  function submitResponse(bytes32 rid, bytes32 encryptedSecret, bytes encryptedData) external {
-    uint256 id = reqIds[rid];
-
+  function submitResponse(uint256 id, bytes32 encryptedSecret, bytes encryptedData) external {
     if(id == 0x0) throw;
     if(encryptedSecret == bytes32(0x0)) throw;
 
