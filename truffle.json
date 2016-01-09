@@ -7,6 +7,7 @@
       // concatenated and processed during build.
       "javascripts/lib/jquery.js",
       "javascripts/lib/jquery-tiny-pubsub.js",
+      "javascripts/lib/sha256.js",
       "javascripts/lib/angular.js",
       "javascripts/lib/transition.js",
       "javascripts/lib/modal.js",

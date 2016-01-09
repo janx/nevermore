@@ -1,4 +1,5 @@
 window.credit_records = []
+window.requests = []
 
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
@@ -83,11 +84,26 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
 
     $.publish('CreditRecord:buy', {list: list});
+    $scope.cleanup();
+  }
+
+  $scope.cleanup = function() {
+    cart.splice(0, cart.length);
   }
 }]);
 
 
 app.controller('CreateCtrl', ['$scope', function ($scope) {
+
+  function SHA256(msg) {
+    return CryptoJS.SHA256(msg).toString(CryptoJS.enc.Hex);
+  }
+
+  function makeHash(creditRecord) {
+    // TODO: make a better rule for generate hash
+    var msg = "" + creditRecord.identity + (new Date()).toString()
+    return SHA256(msg);
+  }
 
   $scope.categoryOptions = [
     {value: 0, name: 'Credit Loan'},
@@ -102,47 +118,91 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 
   $scope.creditRecord = creditRecord = {};
 
-  $scope.createCreditBook = function() {
-    console.info(creditRecord);
-  }
+  $scope.createCreditRecord = function() {
+    var metaData = {
+      identity: creditRecord.identity,
+      hash: makeHash(creditRecord),     // Generated
+      category: creditRecord.category,
+      state: creditRecord.state,
+      provider: 'MyCompany',            // Generated
+      Reputation: 8,                    // Generated
+      timestamp: Math.floor(new Date() / 1000),
+      fee: creditRecord.fee
+    }
 
-  // $.subscribe('CreditBook:create', function(event, data){
-  //   debugger
-  // });
+    credit_book.submit(
+      metaData.identity,
+      metaData.category,
+      metaData.state,
+      metaData.fee,
+      metaData.timestamp,
+      {from: address}
+    )
+
+    // TODO: cleanup after create
+    // TODO: store detail data to localStorage
+  }
 
 }]);
 
 angular.element(document).ready(function() {
-  var address = web3.eth.accounts[0];
-  var credit_book = CreditBook.deployed();
-  var order_book = OrderBook.deployed();
+  window.address = web3.eth.accounts[0];
+  window.credit_book = CreditBook.deployed();
+  window.order_book = OrderBook.deployed();
+  order_book.setCreditBook(CreditBook.deployed_address, {from: address});
 
 
   // initialize credit records
-  credit_book.all({}).
-    then(function(records){
-      if(records[0].length > 0 ) {
+  credit_book.all({}).  then(function(records){
+    if(records[0].length > 0 ) {
 
-        for(var i=0; i<records[0].length; i++) {
-          record = {};
-          record.provider = records[0][i].toString();
-          record.identity = records[1][i].toString();
-          record.category = records[2][i].toNumber();
-          record.state = records[3][i].toNumber();
-          record.fee = records[4][i].toNumber();
-          record.timestamp = records[5][i].toNumber();
-          record.commit = records[6][i].toString();
-          window.credit_records.push(record);
-        }
-
-        $.publish("CreditBook:list");
+      for(var i=0; i<records[0].length; i++) {
+        record = {};
+        record.provider = records[0][i].toString();
+        record.identity = records[1][i].toString();
+        record.category = records[2][i].toNumber();
+        record.state = records[3][i].toNumber();
+        record.fee = records[4][i].toNumber();
+        record.timestamp = records[5][i].toNumber();
+        record.commit = records[6][i].toString();
+        record.orderstate = 0;
+        window.credit_records.push(record);
       }
-    }).then(function(){
-      // initialize requests
-      order_book.getAllRequests({}).
-        then(function(reqProviders, reqFroms, reqCommits){
+
+      $.publish("CreditBook:list");
+    }
+  }).then(function(){
+    // initialize requests
+    order_book.getAllRequests({}).then(function(result){
+      for(var i=0; i < result[0].length; i++) {
+        request = {};
+        request.id = i;
+        request.provider = result[0][i];
+        request.from = result[1][i];
+        request.commit = result[2][i];
+        window.requests.push(request);
+
+        related = false;
+        $.each(web3.eth.accounts, function(index, value) {
+          if(value === request.from) {
+            related = true;
+          }
         });
+
+        if(related) {
+          $.each(window.credit_records, function(index, record) {
+            if(record.commit === request.commit){
+              record.orderstate = 1;
+            }
+          });
+        }
+      }
+    }).then(function(result){
+      // debugger
+      // merge response
+
     });
+  });
 
   // watch the credit records.
 
@@ -159,9 +219,8 @@ angular.element(document).ready(function() {
     $.publish('CreditBook:create', book);
   });
 
-  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-
+  // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
   // buy
   //
@@ -170,7 +229,8 @@ angular.element(document).ready(function() {
     for(var i = 0; i < records.length; i++) {
       var fee = records[i].fee;
       var commit = records[i].commit;
-      order_book.submitRequest(commit, {value: fee});
+
+      order_book.submitRequest(commit, {value: fee, from: address});
     }
   })
 

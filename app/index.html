@@ -30,8 +30,8 @@
               <tr>
                 <th><input type="checkbox"></th>
                 <th>Hash</th>
-                <th>Type</th>
-                <th>Status</th>
+                <th>Category</th>
+                <th>State</th>
                 <th>Provider</th>
                 <th>Reputation</th>
                 <th>Upload Date</th>
@@ -108,66 +108,63 @@
       </div>
 
       <div class="form-group">
-        <label for="">价格</label>
-        <input class="form-control" type="text">
+        <label for="">Price</label>
+        <input class="form-control" type="text" ng-model="creditRecord.fee">
       </div>
 
       <h3 class="caption">Detail Data</h3>
 
       <div class="form-group">
-        <label>违约情况</label>
+        <label>Default?</label>
 
-        <div class="radio">
+        <div class="radio" ng-init="creditRecord.default = true">
           <label>
-            <input type="radio" name="optionsRadios" value="option1" checked>
-             违约
+            <input type="radio" ng-value="true" ng-model="creditRecord.default">
+             YES
           </label>
-        </div>
-
-        <div class="radio">
           <label>
-            <input type="radio" name="optionsRadios" value="option1" checked>
-             未违约
+            <input type="radio" ng-value="false" ng-model="creditRecord.default">
+             NO
           </label>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="">本金</label>
-        <input class="form-control" type="text">
+        <label for="">Principal</label>
+        <input class="form-control" type="text" ng-model="creditRecords.principal">
       </div>
 
       <div class="form-group">
-        <label for="">年化利率</label>
-        <input class="form-control" type="text">
+        <label for="">Annual Interest Rate</label>
+        <input class="form-control" type="text" ng-model="creditRecord.rate">
       </div>
 
       <div class="form-group">
-        <label for="">期限</label>
-        <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years">
+        <label for="">Duration</label>
+        <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years" ng-model="creditRecord.duration">
       </div>
 
       <div class="form-group">
-        <label for="">开始日期</label>
-        <input class="form-control" type="text" placeholder="e.g. 2015-01-09">
+        <label for="">Start Date</label>
+        <input class="form-control" type="date" placeholder="e.g. 2015-01-09" ng-model="creditRecord.start_date">
       </div>
 
       <div class="form-group">
-        <label for="">担保人</label>
-        <input class="form-control" type="text">
+        <label for="">Guarantor</label>
+        <input class="form-control" type="text" ng-model="creditRecord.guarantor">
       </div>
 
       <div class="form-group">
-        <label for="">抵押物</label>
-        <input class="form-control" type="text">
+        <label for="">Collateral</label>
+        <input class="form-control" type="text" ng-model="creditRecord.collateral">
       </div>
 
       <div class="form-group">
-        <label for="">描述</label>
-        <textarea class="form-control" name="name" rows="8" cols="40"></textarea>
+        <label for="">Description</label>
+        <textarea class="form-control" name="name" rows="8" cols="40" ng-model="creditRecord.desc"></textarea>
       </div>
 
-      <button class="btn btn-primary-outline confirm" ng-click="createCreditBook()">Submit</button>
+      <button class="btn btn-primary-outline confirm" ng-click="createCreditRecord()">Submit</button>
     </div>
   </section>
 
