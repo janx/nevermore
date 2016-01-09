@@ -238,7 +238,6 @@ angular.element(document).ready(function() {
   // initialize credit records
   credit_book.all({}).  then(function(records){
     if(records[0].length > 0 ) {
-
       for(var i=0; i<records[0].length; i++) {
         record = {};
         record.provider = records[0][i].toString();
@@ -249,9 +248,12 @@ angular.element(document).ready(function() {
         record.timestamp = records[5][i].toNumber();
         record.commit = records[6][i].toString();
         record.orderstate = 0;
-        window.credit_records.push(record);
+        if(web3.eth.accounts.indexOf(record.provider) >= 0) {
+          record.owner = true;
+        } else {
+          record.owner = false;
+        }
       }
-
     }
   }).then(function(){
     // initialize requests
@@ -276,6 +278,9 @@ angular.element(document).ready(function() {
             if(record.commit === request.commit){
               record.orderstate = 1;
             }
+
+
+
           });
         }
       }
@@ -304,6 +309,11 @@ angular.element(document).ready(function() {
   // watch the credit records.
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
+    var own = false
+    if(web3.eth.accounts.indexOf(result.args.provider) >= 0) {
+      own = true
+    }
+
     var book = {
       identity: decodeFromBytes32(result.args.user),
       category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
@@ -311,7 +321,8 @@ angular.element(document).ready(function() {
       fee: result.args.fee.toNumber(),
       timestamp: result.args.timestamp.toString(), // unix timestamp
       provider: result.args.provider,
-      orderstate: 0
+      orderstate: 0,
+      owner: own
     };
 
     window.credit_records.push(book);
