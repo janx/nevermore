@@ -67,11 +67,24 @@
     </div>
   </main>
 
-  <section class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-modal">
-    <div class="modal-dialog upload-form">
-      <h2 class="title">Upload Data</h2>
+  <section class="modal fade" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
+    <div class="modal-dialog purchase-form">
+      <h2 class="title">Purchase</h2>
 
       <form action="">
+        <input type="hidden">
+
+        <p class="price">{{ getTotal() | currency:'￥' }}</p>
+        <button class="btn btn-primary-outline confirm">Confirm</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-modal">
+    <div class="modal-dialog upload-form"  ng-controller="CreateCtrl">
+      <form action="">
+        <h2 class="title">Upload Data</h2>
+
         <h3 class="caption">Basic Data</h3>
 
         <div class="form-group">
@@ -80,11 +93,11 @@
         </div>
 
         <div class="form-group">
-          <label for="">贷款类型</label>
-          <select class="form-control c-select" id="exampleSelect1">
-            <option>信用贷款</option>
-            <option>担保贷款</option>
-            <option>抵押贷款</option>
+          <label for="">Category</label>
+          <select class="form-control c-select" id="exampleSelect1"
+            ng-model="creditRecord.category"
+            ng-init="creditRecord.category = creditRecord.category || categoryOptions[0].value"
+            ng-options="option.value as option.name for option in categoryOptions">
           </select>
         </div>
 
@@ -157,20 +170,7 @@
           <textarea class="form-control" name="name" rows="8" cols="40"></textarea>
         </div>
 
-        <button class="btn btn-primary-outline confirm">Confirm</button>
-      </form>
-    </div>
-  </section>
-
-  <section class="modal fade" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
-    <div class="modal-dialog purchase-form">
-      <h2 class="title">Purchase</h2>
-
-      <form action="">
-        <input type="hidden">
-
-        <p class="price">{{ getTotal() | currency:'￥' }}</p>
-        <button class="btn btn-primary-outline confirm">Confirm</button>
+        <button class="btn btn-primary-outline confirm" ng-click="createCreditBook()">Submit</button>
       </form>
     </div>
   </section>
