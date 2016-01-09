@@ -1,3 +1,5 @@
+window.credit_records = []
+
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
   return function(input) {
@@ -120,10 +122,34 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
 }]);
 
 angular.element(document).ready(function() {
-  var address = web3.eth.accounts[0]
+  var address = web3.eth.accounts[0];
+  var credit_book = CreditBook.deployed();
+
+
+  // initialize credit records
+  credit_book.all({}).
+    then(function(records){
+      if(records[0].length > 0 ) {
+
+        for(i=0; i<records[0].length; i++) {
+          record = {};
+          record.provider = records[0][i].toString();
+          record.identity = records[1][i].toString();
+          record.category = records[2][i].toNumber();
+          record.state = records[3][i].toNumber();
+          record.fee = records[4][i].toNumber();
+          record.timestamp = records[5][i].toNumber();
+          record.commit = records[6][i].toString();
+          window.credit_records.push(record);
+        }
+
+        $.publish("CreditBook:list");
+      }
+    });
+
+
 
   // watch the credit records.
-  var credit_book = CreditBook.deployed();
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var book = {
