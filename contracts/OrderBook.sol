@@ -96,6 +96,7 @@ contract OrderBook is owned, mortal {
     if(provider != msg.sender) throw;
 
     if(now > reqExpireDates[id]) {
+      reqFees[id] = 0x0;
       reqFroms[id].send(reqFees[id]);
 
       // TODO: penalty of responder
