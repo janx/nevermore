@@ -136,6 +136,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       metaData.state,
       metaData.fee,
       metaData.timestamp,
+      metaData.hash,
       {from: address}
     )
 
