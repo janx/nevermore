@@ -340,7 +340,7 @@ angular.element(document).ready(function() {
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var own = false
-    if(address === result.args.provider)) {
+    if(address === result.args.provider) {
       own = true
     }
 
