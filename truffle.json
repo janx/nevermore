@@ -12,7 +12,6 @@
       "javascripts/lib/transition.js",
       "javascripts/lib/modal.js",
       "javascripts/lib/Chart.min.js",
-      "javascripts/index.js",
       "javascripts/chart.js",
       "javascripts/app.js"
     ],
