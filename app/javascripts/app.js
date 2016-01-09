@@ -25,6 +25,11 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
   ]
 
+  // $.subscribe('CreditBook:create', function(event, data){
+  //   debugger
+  // });
+
+
 }]);
 
 angular.element(document).ready(function() {
@@ -42,10 +47,10 @@ angular.element(document).ready(function() {
       fee: result.args.fee.toNumber(),
       timestamp: result.args.timestamp.toString(), // unix timestamp
       source: result.args.source
-    }
+    };
+
+    $.publish('CreditBook:create', book);
   });
-
-
 
   book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
   book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
