@@ -238,26 +238,38 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
   $scope.creditRecord = creditRecord = {};
 
   $scope.createCreditRecord = function() {
-    var metaData = {
+    var hash = makeHash(creditRecord)
+
+    var data = {
+      hash: hash,
       identity: creditRecord.identity,
-      hash: makeHash(creditRecord),
       category: creditRecord.category,
       state: creditRecord.state,
       timestamp: Math.floor(new Date() / 1000),
-      fee: creditRecord.fee
+      fee: creditRecord.fee,
+      default: creditRecord.default,
+      principal: creditRecord.principal,
+      rate: creditRecord.rate,
+      duration: creditRecord.duration,
+      start_date: creditRecord.start_date,
+      guarantor: creditRecord.guarantor,
+      collateral: creditRecord.collateral,
+      desc: creditRecord.desc
     }
 
-      credit_book.submit(
-        encodeToBytes32(metaData.identity),
-        metaData.category,
-        metaData.state,
-        metaData.fee,
-        metaData.timestamp,
-        metaData.hash,
-        {from: address}
-      ).catch(function(e) {
-        console.log(e)
-      });
+    localStorage.setItem(hash, angular.toJson(data));
+
+    credit_book.submit(
+      encodeToBytes32(metaData.identity),
+      data.category,
+      data.state,
+      data.fee,
+      data.timestamp,
+      data.hash,
+      {from: address}
+    ).catch(function(e) {
+      console.log(e)
+    });
 
     // close upload modal
 
