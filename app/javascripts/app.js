@@ -164,7 +164,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
   }
 
-  $scope.cart = cart = [];
+  var cart = $scope.cart = [];
 
   $scope.changeCart = function($event, cr) {
     var checkbox = $event.target;
