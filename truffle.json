@@ -23,7 +23,8 @@
     ],
     // Note: You can also include directories.
     // This will copy a static images directory to the build directory.
-    "images/": "images/"
+    "images/": "images/",
+    "fonts/": "fonts/"
   },
   "deploy": [
     // Names of contracts that should be deployed to the network.

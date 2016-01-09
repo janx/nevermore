@@ -11,6 +11,8 @@
 
 @import "animation";
 @import "shake";
+@import "icon-font";
+@import "naira";
 
 html,
 body {
@@ -34,7 +36,6 @@ body {
   padding: 0 4em;
   border-bottom: 1px solid #ececec;
   background-color: #fff;
-  line-height: 76px;
   text-align: center;
 
   .logo {

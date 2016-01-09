@@ -1,0 +1,8 @@
+@font-face { font-family: 'vicons'; font-weight: normal; font-style: normal; src: url('./fonts/vicons/vicons.eot?1u5j7r'); src: url('./fonts/vicons/vicons.eot?#iefix1u5j7r') format('embedded-opentype'), url('./fonts/vicons/vicons.woff?1u5j7r') format('woff'), url('./fonts/vicons/vicons.ttf?1u5j7r') format('truetype'), url('./fonts/vicons/vicons.svg?1u5j7r#vicons') format('svg'); }
+.icon { font-family: 'vicons'; font-size: inherit; font-weight: normal; font-style: normal; line-height: inherit; position: relative; display: inline-block; transform: translate(0, 0); vertical-align: middle; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.icon::before { display: inline-block; width: 100%; }
+.icon-upload:before {
+  content: '\e610';
+  padding: 8px;
+  color: #fff;
+}

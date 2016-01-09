@@ -1,0 +1,4 @@
+eth:
+  genesis: genesis.json
+jsonrpc:
+  corsdomain: "*"
