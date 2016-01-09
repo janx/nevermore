@@ -119,9 +119,8 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
   $scope.creditRecord = creditRecord = {};
 
   $scope.createCreditBook = function() {
-    console.info(creditRecord);
 
-    metaData = {
+    var metaData = {
       identity: creditRecord.identity,
       hash: makeHash(creditRecord),     // Generated
       category: creditRecord.category,
@@ -132,7 +131,14 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       fee: creditRecord.fee
     }
 
-    $.publish('CreditRecord:create', metaData);
+    credit_book.submit(
+      metaData.identity,
+      metaData.category,
+      metaData.state,
+      metaData.fee,
+      metaData.timestamp,
+      {from: address}
+    )
 
     // TODO: cleanup after create
     // TODO: store detail data to localStorage
@@ -141,9 +147,9 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 }]);
 
 angular.element(document).ready(function() {
-  var address = web3.eth.accounts[0];
-  var credit_book = CreditBook.deployed();
-  var order_book = OrderBook.deployed();
+  window.address = web3.eth.accounts[0];
+  window.credit_book = CreditBook.deployed();
+  window.order_book = OrderBook.deployed();
   order_book.setCreditBook(CreditBook.deployed_address, {from: address});
 
 
@@ -214,20 +220,8 @@ angular.element(document).ready(function() {
     $.publish('CreditBook:create', book);
   });
 
-  credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-
-
-  $.subscribe('CreditRecord:create', function(event, data) {
-    credit_book.submit(
-      data.identity,
-      data.category,
-      data.state,
-      data.fee,
-      data.timestamp,
-      {from: address}
-    )
-  });
+  // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  // credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
   // buy
   //
