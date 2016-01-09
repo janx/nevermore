@@ -18,6 +18,26 @@ filters.filter('categoryFilter', function() {
   };
 });
 
+
+filters.filter('stateFilter', function() {
+  return function(input) {
+    var result = "";
+    switch(input) {
+      case 0:
+        result = "On Going";
+        break;
+      case 1:
+        result = "Status 1";
+        break;
+      case 2:
+        result = "Status 2";
+        break;
+    }
+
+    return result;
+  }
+});
+
 var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
