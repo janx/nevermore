@@ -84,6 +84,11 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
 
     $.publish('CreditRecord:buy', {list: list});
+    $scope.cleanup();
+  }
+
+  $scope.cleanup = function() {
+    cart.splice(0, cart.length);
   }
 }]);
 

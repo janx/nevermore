@@ -30,8 +30,8 @@
               <tr>
                 <th><input type="checkbox"></th>
                 <th>Hash</th>
-                <th>Type</th>
-                <th>Status</th>
+                <th>Category</th>
+                <th>State</th>
                 <th>Provider</th>
                 <th>Reputation</th>
                 <th>Upload Date</th>
@@ -108,62 +108,62 @@
       </div>
 
       <div class="form-group">
-        <label for="">价格</label>
-        <input class="form-control" type="text">
+        <label for="">Price</label>
+        <input class="form-control" type="text" ng-model="creditRecord.fee">
       </div>
 
       <h3 class="caption">Detail Data</h3>
 
       <div class="form-group">
-        <label>违约情况</label>
+        <label>Default?</label>
 
         <div class="radio">
           <label>
             <input type="radio" name="optionsRadios" value="option1" checked>
-             违约
+             YES
           </label>
         </div>
 
         <div class="radio">
           <label>
             <input type="radio" name="optionsRadios" value="option1" checked>
-             未违约
+             NO
           </label>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="">本金</label>
+        <label for="">Principal</label>
         <input class="form-control" type="text">
       </div>
 
       <div class="form-group">
-        <label for="">年化利率</label>
+        <label for="">Annual Interest Rate</label>
         <input class="form-control" type="text">
       </div>
 
       <div class="form-group">
-        <label for="">期限</label>
+        <label for="">Duration</label>
         <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years">
       </div>
 
       <div class="form-group">
-        <label for="">开始日期</label>
+        <label for="">Start Date</label>
         <input class="form-control" type="text" placeholder="e.g. 2015-01-09">
       </div>
 
       <div class="form-group">
-        <label for="">担保人</label>
+        <label for="">Guarantor</label>
         <input class="form-control" type="text">
       </div>
 
       <div class="form-group">
-        <label for="">抵押物</label>
+        <label for="">Collateral</label>
         <input class="form-control" type="text">
       </div>
 
       <div class="form-group">
-        <label for="">描述</label>
+        <label for="">Description</label>
         <textarea class="form-control" name="name" rows="8" cols="40"></textarea>
       </div>
 
