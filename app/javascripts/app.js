@@ -12,6 +12,8 @@ window.generageData = function() {
       providerReputation: 7,
       fee: 10,
       timestamp: 1452268704,
+      owner: true,
+      orderstate: 0,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
@@ -23,6 +25,8 @@ window.generageData = function() {
       providerReputation: 8,
       fee: 20,
       timestamp: 1452268704,
+      owner: false,
+      orderstate: 0,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
@@ -34,6 +38,8 @@ window.generageData = function() {
       providerReputation: 9,
       fee: 30,
       timestamp: 1452268704,
+      owner: false,
+      orderstate: 0,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
@@ -45,11 +51,13 @@ window.generageData = function() {
       providerReputation: 10,
       fee: 40,
       timestamp: 1452268704,
+      owner: false,
+      orderstate: 1,
       source: '43b2aa9c63ca995aa6766977fec06067'
     }
   ]
 
-  for (var i=1; i < data.length; i++) {
+  for (var i=0; i < data.length; i++) {
     window.credit_records.push(data[i]);
   }
 }
@@ -131,6 +139,30 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     return window.credit_records;
   }
 
+  $scope.buyable = function(cr) {
+    if (cr.owner) {
+      return false;
+    }
+
+    if (cr.orderstate === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  $scope.reviewable = function(cr) {
+    if (cr.owner) {
+      return true;
+    }
+
+    if (cr.orderstate === 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   $scope.cart = cart = [];
 
   $scope.changeCart = function($event, cr) {
@@ -162,7 +194,16 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
 
     $.publish('CreditRecord:buy', {list: list});
+
+    $('#purchase-modal').modal('hide');
+
+    for (var i=0; i < cart.length; i++) {
+      cart[i].orderstate = 1;
+    }
+
     $scope.cleanup();
+
+    $('#result-modal').modal('show');
   }
 
   $scope.cleanup = function() {
@@ -206,17 +247,20 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       fee: creditRecord.fee
     }
 
-    credit_book.submit(
-      encodeToBytes32(metaData.identity),
-      metaData.category,
-      metaData.state,
-      metaData.fee,
-      metaData.timestamp,
-      metaData.hash,
-      {from: address}
-    )
+      credit_book.submit(
+        encodeToBytes32(metaData.identity),
+        metaData.category,
+        metaData.state,
+        metaData.fee,
+        metaData.timestamp,
+        metaData.hash,
+        {from: address}
+      ).catch(function(e) {
+        console.log(e)
+      });
 
     // close upload modal
+
     $('#upload-modal').modal('hide');
 
     // TODO: cleanup after create
@@ -235,7 +279,6 @@ angular.element(document).ready(function() {
   // initialize credit records
   credit_book.all({}).  then(function(records){
     if(records[0].length > 0 ) {
-
       for(var i=0; i<records[0].length; i++) {
         record = {};
         record.provider = records[0][i].toString();
@@ -246,9 +289,12 @@ angular.element(document).ready(function() {
         record.timestamp = records[5][i].toNumber();
         record.commit = records[6][i].toString();
         record.orderstate = 0;
-        window.credit_records.push(record);
+        if(address === record.provider) {
+          record.owner = true;
+        } else {
+          record.owner = false;
+        }
       }
-
     }
   }).then(function(){
     // initialize requests
@@ -262,17 +308,18 @@ angular.element(document).ready(function() {
         window.requests.push(request);
 
         related = false;
-        $.each(web3.eth.accounts, function(index, value) {
-          if(value === request.from) {
-            related = true;
-          }
-        });
+        if(address === request.from) {
+          related = true;
+        }
 
         if(related) {
           $.each(window.credit_records, function(index, record) {
             if(record.commit === request.commit){
               record.orderstate = 1;
             }
+
+
+
           });
         }
       }
@@ -301,15 +348,23 @@ angular.element(document).ready(function() {
   // watch the credit records.
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
+    var own = false
+    if(address === result.args.provider) {
+      own = true
+    }
+
     var book = {
-      identity: result.args.user,
+      identity: decodeFromBytes32(result.args.user),
       category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
       state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
       fee: result.args.fee.toNumber(),
       timestamp: result.args.timestamp.toString(), // unix timestamp
-      provider: result.args.provider
+      provider: result.args.provider,
+      orderstate: 0,
+      owner: own
     };
 
+    window.credit_records.push(book);
     $.publish('CreditBook:create', book);
   });
 
@@ -322,17 +377,37 @@ angular.element(document).ready(function() {
       commit: result.args.commit
     }
 
+    related = false;
+    if(address === request.from) {
+      related = true;
+    }
+
+    if(related) {
+      $.each(window.credit_records, function(index, record) {
+        if(record.commit === request.commit){
+          record.orderstate = 1;
+        }
+      });
+    }
+
     $.requests.push(request)
+
+    if(address === request.from) {
+      $.publish('notice', 'Request send successfully.')
+    }
+
+    if(address === request.provider) {
+      $.publish('notice', 'You received a request.')
+    }
   });
 
 
-
-   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-   credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
 
 
