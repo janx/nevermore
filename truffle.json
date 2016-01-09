@@ -12,6 +12,7 @@
       "javascripts/lib/transition.js",
       "javascripts/lib/modal.js",
       "javascripts/lib/Chart.min.js",
+      "javascripts/lib/toastr.min.js",
       "javascripts/chart.js",
       "javascripts/index.js",
       "javascripts/app.js"
