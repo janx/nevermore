@@ -95,6 +95,16 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
 
 app.controller('CreateCtrl', ['$scope', function ($scope) {
 
+  function SHA256(msg) {
+    return CryptoJS.SHA256(msg).toString(CryptoJS.enc.Hex);
+  }
+
+  function makeHash(creditRecord) {
+    // TODO: make a better rule for generate hash
+    var msg = "" + creditRecord.identity + (new Date()).toString()
+    return SHA256(msg);
+  }
+
   $scope.categoryOptions = [
     {value: 0, name: 'Credit Loan'},
     {value: 1, name: 'Collateral Loan'},
@@ -110,11 +120,23 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 
   $scope.createCreditBook = function() {
     console.info(creditRecord);
-  }
 
-  // $.subscribe('CreditBook:create', function(event, data){
-  //   debugger
-  // });
+    metaData = {
+      identity: creditRecord.identity,
+      hash: makeHash(creditRecord),     // Generated
+      category: creditRecord.category,
+      state: creditRecord.state,
+      provider: 'MyCompany',            // Generated
+      Reputation: 8,                    // Generated
+      timestamp: Math.floor(new Date() / 1000),
+      fee: creditRecord.fee
+    }
+
+    $.publish('CreditRecord:create', metaData);
+
+    // TODO: cleanup after create
+    // TODO: store detail data to localStorage
+  }
 
 }]);
 
@@ -195,6 +217,17 @@ angular.element(document).ready(function() {
   credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
   credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
+
+  $.subscribe('CreditRecord:create', function(event, data) {
+    credit_book.submit(
+      data.identity,
+      data.category,
+      data.state,
+      data.fee,
+      data.timestamp,
+      {from: address}
+    )
+  }
 
   // buy
   //
