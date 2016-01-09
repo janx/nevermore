@@ -75,20 +75,22 @@ contract OrderBook is owned, mortal {
     if(provider == 0x0) throw;
     if(msg.value < fee) throw; // TODO: should we refund extra fee?
 
-    //bytes32 id = sha3(msg.sender, commit);
-    if(reqIds[commit] != 0x0) throw;
+    bytes32 rid = sha3(msg.sender, commit);
+    if(reqIds[rid] != 0x0) throw;
 
     //requests[id] = Request(provider, msg.sender, commit);
-    reqIds[commit] = reqCommits.length;
+    reqIds[rid] = reqCommits.length;
     reqProviders.push(provider);
     reqFroms.push(msg.sender);
     reqCommits.push(commit);
 
-    NewRequest(provider, msg.sender, reqIds[commit], commit);
+    NewRequest(provider, msg.sender, reqIds[rid], commit);
   }
 
-  function submitResponse(uint256 id, bytes32 encryptedSecret, bytes encryptedData) external {
-    if(reqCommits[id] == bytes32(0x0)) throw;
+  function submitResponse(bytes32 rid, bytes32 encryptedSecret, bytes encryptedData) external {
+    uint256 id = reqIds[rid];
+
+    if(id == 0x0) throw;
     if(encryptedSecret == bytes32(0x0)) throw;
 
     address provider = reqProviders[id];
