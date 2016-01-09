@@ -70,45 +70,6 @@ body {
       }
     }
   }
-
-  .info {
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 160px;
-    padding: 2em;
-    border: 1px solid #ececec;
-    margin-bottom: 2em;
-    background-color: #fff;
-
-    .profile {
-      text-align: center;
-
-      .avatar {
-        width: 60px;
-      }
-
-      .identity {
-        font-size: 12px;
-      }
-    }
-
-    .radar {
-      width: 200px;
-      height: 200px;
-    }
-
-    .prompt {
-      text-align: right;
-      .description {
-        text-align: left;
-      }
-
-      .purchase {
-        margin-top: 24px;
-      }
-    }
-  }
 }
 
 .table-container {
@@ -210,35 +171,142 @@ body {
   border: 1px solid #CAE5F9;
   margin-bottom: 2em;
   background-color: #fff;
+  text-align: left;
+
+  .title {
+    margin-bottom: 1em;
+  }
+
+  .caption {
+    padding-bottom: 1em;
+    border-bottom: 1px solid #ececec;
+    margin-bottom: 1em;
+    text-align: center;
+  }
+
+  .form-group {
+    label {
+      color: #999;
+      font-weight: normal;
+    }
+  }
+
+  .radio label, .checkbox label {
+    font-weight: 100;
+  }
+
+  .confirm {
+    @include center-block();
+  }
+}
+
+#result-modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.purchase-result {
+  width: 980px;
+  padding: 3em;
+  margin: 6em auto;
+  border: 1px solid #CAE5F9;
+  margin-bottom: 2em;
+  background-color: #fff;
   text-align: center;
 
   .title {
     margin-bottom: 1em;
   }
 
-  form {
-    text-align: left;
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 160px;
+    padding: 2em;
+    border: 1px solid #ececec;
+    margin-bottom: 2em;
+    background-color: #fff;
 
-    .caption {
-      padding-bottom: 1em;
-      border-bottom: 1px solid #ececec;
-      margin-bottom: 1em;
+    .profile {
       text-align: center;
-    }
 
-    .form-group {
-      label {
-        color: #999;
-        font-weight: normal;
+      .avatar {
+        width: 60px;
+      }
+
+      .identity {
+        font-size: 12px;
       }
     }
 
-    .radio label, .checkbox label {
-      font-weight: 100;
+    .radar {
+      width: 200px;
+      height: 200px;
     }
 
-    .confirm {
-      @include center-block();
+    .prompt {
+      text-align: right;
+      .description {
+        .title {
+          margin-bottom: 1em;
+        }
+
+        text-align: left;
+      }
+
+      .purchase {
+        margin-top: 24px;
+      }
+    }
+  }
+
+  .card {
+    display: flex;
+    padding: 2em;
+    border: 1px solid #ececec;
+    margin-bottom: 1em;
+    text-align: left;
+
+    p {
+      margin-bottom: 1em;
+      color: #999;
+      font-weight: normal;
+    }
+
+    .item {
+      padding-right: 3em;
+
+      &:first-child {
+        border-right: 1px solid #ececec;
+        margin-right: 3em;
+      }
+
+      &:last-child {
+        padding-right: 0;
+        margin-right: 0;
+      }
+
+      &.description {
+        .title {
+          color: #999;
+          font-weight: normal;
+        }
+
+        max-width: 350px;
+      }
+    }
+
+    // &.applying { color: #0073DF; }
+    // &.bad-debt { color: #EB716E; }
+    // &.advance { color: #92CF7E; }
+    // &.loaning { color: #8875CC; }
+
+    .item {
+      .default {
+        &.no { color: #92CF7E; }
+        &.yes { color: #EB716E; }
+      }
     }
   }
 }

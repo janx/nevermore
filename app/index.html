@@ -74,7 +74,7 @@
       <input type="hidden">
 
       <p class="price">{{ getTotal() | currency:'￥' }}</p>
-      <button class="btn btn-primary-outline confirm">Confirm</button>
+      <button id="purchase-confirm" class="btn btn-primary-outline confirm">Confirm</button>
     </div>
   </section>
 
@@ -168,6 +168,70 @@
       </div>
 
       <button class="btn btn-primary-outline confirm" ng-click="createCreditBook()">Submit</button>
+    </div>
+  </section>
+
+  <section class="modal fade" id="result-modal" tabindex="-1" role="dialog" aria-labelledby="result-modal">
+    <div class="modal-dialog purchase-result">
+      <div class="info">
+        <div class="profile">
+          <img class="avatar" src="images/avatar.svg" alt="">
+          <p class="identity">ID:445281199xxxx9332xxc</p>
+        </div>
+
+        <canvas id="myChart" class="radar"></canvas>
+
+        <div class="prompt">
+          <div class="description">
+            <h3 class="title">information understanding</h3>
+            <p>Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous</p>
+          </div>
+
+          <button class="btn btn-primary-outline purchase">purchase more</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="item">
+          <p class="default no">Default: NO</p>
+          <p>Principal: 500,500,21</p>
+          <p>Annualized Rate: 50%</p>
+          <p>Guarantor: Jan</p>
+        </div>
+
+        <div class="item">
+          <p>Type: credit loan</p>
+          <p>Status: applying</p>
+          <p>Deadline: 3 years</p>
+          <p>Start Date: 2015-01-09</p>
+        </div>
+
+        <div class="item description">
+          <h3 class="title">Description</h3>
+          <p>Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="item">
+          <p class="default yes">Default: YES</p>
+          <p>Principal: 500,500,21</p>
+          <p>Annualized Rate: 50%</p>
+          <p>Guarantor: Jan</p>
+        </div>
+
+        <div class="item">
+          <p>Type: credit loan</p>
+          <p>Status: applying</p>
+          <p>Deadline: 3 years</p>
+          <p>Start Date: 2015-01-09</p>
+        </div>
+
+        <div class="item description">
+          <h3 class="title">Description</h3>
+          <p>Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous</p>
+        </div>
+      </div>
     </div>
   </section>
 
