@@ -450,7 +450,8 @@ angular.element(document).ready(function() {
 
   order_book.NewResponse({}, {address: OrderBook.deployed_address}, function(error, result) {
     var id = result.args.id.toNumber();
-    request = window.requests[id]
+    // FIXME: here should be id -1 or id
+    request = window.requests[id - 1]
     if(address === request.from) {
       $.publish('notice', 'Yur request has been response');
     }
