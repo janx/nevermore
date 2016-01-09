@@ -1,34 +1,121 @@
-console.log("jQuery loaded");
-console.log($);
-console.log("Angular loaded");
-console.log(angular);
+var filters = angular.module('neverMoreFilters', [])
+filters.filter('categoryFilter', function() {
+  return function(input) {
+    var result = "";
+    switch(input) {
+      case 0:
+        result = "Credit Loan";
+        break;
+      case 1:
+        result = "Category 1"
+        break;
+      case 2:
+        resrlt = "Category 2"
+        break;
+    }
 
-var app = angular.module('Nevermore', []);
+    return result;
+  };
+});
+
+
+filters.filter('stateFilter', function() {
+  return function(input) {
+    var result = "";
+    switch(input) {
+      case 0:
+        result = "On Going";
+        break;
+      case 1:
+        result = "Status 1";
+        break;
+      case 2:
+        result = "Status 2";
+        break;
+    }
+
+    return result;
+  }
+});
+
+var app = angular.module('Nevermore', ['neverMoreFilters']);
+
 app.controller('SearchCtrl', ['$scope', function ($scope) {
 
   $scope.creditRecords = [
     {
-      identity: '11111111111111111',
+      id: 'ccb5c3f944732008d5c8b13a6c928f673bee8126',
+      identity: '111111111111111111',
       category: 0,
       state: 0,
+      providerName: 'ABC',
+      providerReputation: 7,
       fee: 10,
       timestamp: 1452268704,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
-      identity: '22222222222222222',
+      id: '8e6d63757c4aef7808850728f0c0520a4cce3755',
+      identity: '111111111111111111',
+      category: 0,
+      state: 0,
+      providerName: 'ABC',
+      providerReputation: 8,
+      fee: 20,
+      timestamp: 1452268704,
+      source: '43b2aa9c63ca995aa6766977fec06067'
+    },
+    {
+      id: 'dd248eae48a38df07eee39e0d5bb7d11ad885f13',
+      identity: '111111111111111111',
       category: 1,
       state: 1,
-      fee: 10,
+      providerName: 'ABC',
+      providerReputation: 9,
+      fee: 30,
+      timestamp: 1452268704,
+      source: '43b2aa9c63ca995aa6766977fec06067'
+    },
+    {
+      id: 'aac65e92e5c17278a2df111dc17042f65a8aca56',
+      identity: '111111111111111111',
+      category: 1,
+      state: 1,
+      providerName: 'ABC',
+      providerReputation: 10,
+      fee: 40,
       timestamp: 1452268704,
       source: '43b2aa9c63ca995aa6766977fec06067'
     }
   ]
 
+  $scope.cart = cart = [];
+  $scope.changeCart = function($event, cr) {
+    var checkbox = $event.target;
+    var action = (checkbox.checked ? 'add' : 'remove');
+    if (action == 'add') {
+      cart.push(cr);
+    } else {
+      var index = cart.indexOf(cr);
+      if (index > -1) {
+        cart.splice(index, 1);
+      }
+    }
+  }
+  $scope.getTotal = function() {
+    var total = 0;
+    for (var i = 0; i < $scope.cart.length; i++) {
+      total += $scope.cart[i].fee;
+    }
+    return total;
+  }
+  $scope.buy = function() {
+    alert('buy successful');
+  }
+
   // $.subscribe('CreditBook:create', function(event, data){
   //   debugger
   // });
-
 
 }]);
 

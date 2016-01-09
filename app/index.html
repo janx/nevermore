@@ -7,7 +7,7 @@
   <link href="./app.css" rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
 </head>
-<body>
+<body ng-app="Nevermore">
   <header class="navbar">
     <a class="link" href="">SETTING</a>
     <a class="link" href="">HISTORY</a>
@@ -15,98 +15,77 @@
 
   <main class="main">
     <h1 class="slogan">NEVER MORE</h1>
-    <form class="search" action="">
-      <div class="form-group">
-        <input class="form-control" type="text" placeholder="Search">
-        <button class="btn btn-primary-outline upload">Upload</button>
-      </div>
-    </form>
 
-    <section class="info">
-      <div class="profile">
-        <img class="avatar" src="images/avatar.svg" alt="">
-        <p class="identity">ID:445281199xxxx9332xxc</p>
-      </div>
+    <div ng-controller="SearchCtrl">
+      <form class="search" action="">
+        <div class="form-group">
+          <input class="form-control" type="text" ng-model="query" placeholder="Search">
+          <button class="btn btn-primary-outline upload">Upload</button>
+        </div>
+      </form>
 
-      <canvas id="myChart" class="radar"></canvas>
 
-      <div class="prompt">
-        <p class="description">
-          Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous
-        </p>
+      <section class="table-container" ng-if="query.length > 0">
+        <table class="table">
+          <thead>
+              <tr>
+                <th><input type="checkbox"></th>
+                <th>Hash</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Provider</th>
+                <th>Reputation</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-        <button class="btn btn-primary-outline purchase">purchase</button>
-      </div>
+            <tbody>
+              <tr class="ban" ng-repeat="cr in creditRecords | filter: {identity: query}">
+                <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
+                <td class="hash">{{cr.id | limitTo: 8 }}</td>
+                <td class="type">{{ cr.category | categoryFilter }}</td>
+                <td class="status">{{ cr.state | stateFilter }}</td>
+                <td class="provider">{{ cr.providerName }}</td>
+                <td class="provider-reputation">{{ cr.providerReputation }}</td>
+                <td class="date">{{ cr.timestamp * 1000 | date: 'yyyy-MM-dd' }}</td>
+                <td class="price">{{ cr.fee | currency:"CNY" }}</td>
+                <td class="action uploaded">View</td>
+              </tr>
+            </tbody>
+        </table>
 
-    </section>
+        <div class="checkout">
+          <div class="sum">
+            <p class="price">￥1,193,62</p>
+            <p class="description">36 ITEMS</p>
+          </div>
 
-    <section class="table-container">
-      <table class="table">
-        <thead>
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>ID</th>
-              <th>Status</th>
-              <th>Type</th>
-              <th>Action</th>
-              <th>Hash</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr class="ban">
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status bad-debt">bad debt</td>
-              <td>Fish</td>
-              <td class="action uploaded">Uploade</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-
-            <tr class="ban">
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status advance">advance</td>
-              <td>Fish</td>
-              <td class="action ban">Ban</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status applying">applying</td>
-              <td>Fish</td>
-              <td class="action buy">Buy</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>445281199xxxx9332xxc</td>
-              <td class="status loaning">loaning</td>
-              <td>Fish</td>
-              <td class="action buy">Buy</td>
-              <td class="more">bd71e7a...</td>
-              <td class="price">1002</td>
-            </tr>
-          </tbody>
-      </table>
-
-      <div class="checkout">
-        <div class="sum">
-          <p class="price">￥1,193,62</p>
-          <p class="description">36 ITEMS</p>
+          <button class="btn btn-primary-outline purchase">Purchase</button>
         </div>
 
-        <button class="btn btn-primary-outline purchase">Purchase</button>
-      </div>
+      </section>
+    </div>
 
-    </section>
+    <!-- <section class="info"> -->
+    <!--   <div class="profile"> -->
+    <!--     <img class="avatar" src="images/avatar.svg" alt=""> -->
+    <!--     <p class="identity">ID:445281199xxxx9332xxc</p> -->
+    <!--   </div> -->
+
+    <!--   <canvas id="myChart" class="radar"></canvas> -->
+
+    <!--   <div class="prompt"> -->
+    <!--     <p class="description"> -->
+    <!--       Right, I'm gunna be that guy if nobody else will. Please stop asking to Press L - it makes me feel pressured and nervous -->
+    <!--     </p> -->
+
+    <!--     <button class="btn btn-primary-outline purchase">purchase</button> -->
+    <!--   </div> -->
+
+    <!-- </section> -->
+
 
     <section class="purchase-form">
       <h2 class="title">Purchase</h2>
@@ -123,37 +102,89 @@
       <h2 class="title">Upload Data</h2>
 
       <form action="">
+        <h3 class="caption">Basic Data</h3>
+
         <div class="form-group">
-          <label>Break a contract</label>
+          <label for="">ID</label>
+          <input class="form-control" type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="">贷款类型</label>
+          <select class="form-control c-select" id="exampleSelect1">
+            <option>信用贷款</option>
+            <option>担保贷款</option>
+            <option>抵押贷款</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="">状态</label>
+          <select class="form-control c-select" id="exampleSelect1">
+            <option>申请中</option>
+            <option>进行中</option>
+            <option>已完结</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="">价格</label>
+          <input class="form-control" type="text">
+        </div>
+
+        <h3 class="caption">Detail Data</h3>
+
+        <div class="form-group">
+          <label>违约情况</label>
 
           <div class="radio">
             <label>
               <input type="radio" name="optionsRadios" value="option1" checked>
-               break a contract
+               违约
             </label>
           </div>
 
           <div class="radio">
             <label>
               <input type="radio" name="optionsRadios" value="option1" checked>
-               break a contract
+               未违约
             </label>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="">Principal</label>
+          <label for="">本金</label>
           <input class="form-control" type="text">
         </div>
 
         <div class="form-group">
-          <label for="">Annualized rate</label>
+          <label for="">年化利率</label>
           <input class="form-control" type="text">
         </div>
 
         <div class="form-group">
-          <label for="">Date</label>
+          <label for="">期限</label>
+          <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years">
+        </div>
+
+        <div class="form-group">
+          <label for="">开始日期</label>
+          <input class="form-control" type="text" placeholder="e.g. 2015-01-09">
+        </div>
+
+        <div class="form-group">
+          <label for="">担保人</label>
           <input class="form-control" type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="">抵押物</label>
+          <input class="form-control" type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="">描述</label>
+          <textarea class="form-control" name="name" rows="8" cols="40"></textarea>
         </div>
 
         <button class="btn btn-primary-outline confirm">Confirm</button>
