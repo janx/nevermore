@@ -1,6 +1,35 @@
 window.credit_records = []
 window.requests = []
 
+// Utils methods
+var hexPadding = function(hex, len) {
+  for(var i=hex.length; i<len; i++) {
+    hex = '0' + hex;
+  }
+  return hex;
+};
+
+var toBytes = function(hex) {
+  return '0x'+hex;
+};
+
+var toBytes32 = function(hex) {
+  return '0x'+hexPadding(hex, 64);
+};
+
+var fromBytes32 = function(hex) {
+  return hex.replace(/^(0x0*)/, '')
+};
+
+var encodeToBytes32 = function(str) {
+  return toBytes32(web3.toHex('_v1_'+str).slice(2));
+};
+
+var decodeFromBytes32 = function(hex) {
+  return web3.toAscii('0x' + fromBytes32(hex)).replace(/^_v1_/, '');
+}
+
+
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
   return function(input) {
@@ -121,17 +150,15 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
   $scope.createCreditRecord = function() {
     var metaData = {
       identity: creditRecord.identity,
-      hash: makeHash(creditRecord),     // Generated
+      hash: makeHash(creditRecord),
       category: creditRecord.category,
       state: creditRecord.state,
-      provider: 'MyCompany',            // Generated
-      Reputation: 8,                    // Generated
       timestamp: Math.floor(new Date() / 1000),
       fee: creditRecord.fee
     }
 
     credit_book.submit(
-      metaData.identity,
+      encodeToBytes32(metaData.identity),
       metaData.category,
       metaData.state,
       metaData.fee,
@@ -139,6 +166,9 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       metaData.hash,
       {from: address}
     )
+
+    // close upload modal
+    $('#upload-modal').modal('hide');
 
     // TODO: cleanup after create
     // TODO: store detail data to localStorage
