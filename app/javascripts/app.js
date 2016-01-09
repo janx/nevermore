@@ -168,9 +168,12 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
   var template = Handlebars.compile(source);
   $scope.showDetailData = function(commit) {
     var data = localStorage.getItem(commit);
+    var dataModal = $('#detail-data-modal')
     if (data) {
-      var html = template(angular.fromJson(data));
-      $('#detail-data-modal').html(html).modal('show');
+      data = angular.fromJson(data)
+      dataModal.find('.card').html(template(data))
+      dataModal.find('.identity').text("ID: " + data.identity)
+      dataModal.modal('show');
     }
   }
 

@@ -209,4 +209,7 @@ $(document).ready(function() {
 
   var ctx = document.getElementById("myChart").getContext("2d")
   var myRadarChart = new Chart(ctx).Radar(data, options)
+
+  var ctx2 = document.getElementById("myChart2").getContext("2d")
+  var myRadarChart2 = new Chart(ctx2).Radar(data, options);
 })

@@ -249,9 +249,7 @@
   </section>
 
 
-  <section class="modal fade" id="detail-data-modal" tabindex="-1" role="dialog" aria-labelledby="result-modal"></section>
-
-  <script id="detail-data-template" type="text/x-handlebars-template">
+  <section class="modal fade" id="detail-data-modal" tabindex="-1" role="dialog" aria-labelledby="result-modal">
     <div class="modal-dialog purchase-result">
       <div class="info">
         <div class="profile">
@@ -259,7 +257,7 @@
           <p class="identity">ID: {{identity}}</p>
         </div>
 
-        <canvas id="myChart" class="radar"></canvas>
+        <canvas id="myChart2" class="radar"></canvas>
 
         <div class="prompt">
           <div class="description">
@@ -277,25 +275,28 @@
       </div>
 
       <div class="card">
-        <div class="item">
-          <p class="default no">Default: {{default}}</p>
-          <p>Principal: {{principal}}</p>
-          <p>Annualized Rate: {{rate}}</p>
-          <p>Guarantor: {{guarantor}}</p>
-        </div>
-
-        <div class="item">
-          <p>Type: credit loan</p>
-          <p>Status: applying</p>
-          <p>Deadline: 3 years</p>
-          <p>Start Date: {{ start_date }}</p>
-        </div>
-
-        <div class="item description">
-          <h3 class="title">Description</h3>
-          <p>{{ desc }}</p>
-        </div>
       </div>
+    </div>
+  </section>
+
+  <script id="detail-data-template" type="text/x-handlebars-template">
+    <div class="item">
+      <p class="default no">Default: {{default}}</p>
+      <p>Principal: {{principal}}</p>
+      <p>Annualized Rate: {{rate}}</p>
+      <p>Guarantor: {{guarantor}}</p>
+    </div>
+
+    <div class="item">
+      <p>Type: credit loan</p>
+      <p>Status: applying</p>
+      <p>Deadline: 3 years</p>
+      <p>Start Date: {{ start_date }}</p>
+    </div>
+
+    <div class="item description">
+      <h3 class="title">Description</h3>
+      <p>{{ desc }}</p>
     </div>
   </script>
 
