@@ -41,6 +41,10 @@ contract CreditBook is owned, mortal {
     return (record_providers[id], record_identities[id], record_categories[id], record_states[id], record_fees[id], record_timestamps[id]);
   }
 
+  function all() constant returns (address[], bytes32[], uint16[], uint16[], uint256[], uint256[], bytes32[]) {
+    return (record_providers, record_identities, record_categories, record_states, record_fees, record_timestamps, record_commits);
+  }
+
   function submit(bytes32 user, uint16 category, uint16 state, uint256 fee, uint256 timestamp, bytes32 commit) external {
     if(user == bytes32(0x0)) throw;
     if(timestamp == 0x0) throw;

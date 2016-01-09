@@ -30,6 +30,20 @@ contract('CreditBook', function(accounts) {
     }).catch(done);
   });
 
+  it("should all records", function(done) {
+    var book = CreditBook.deployed();
+
+    Promise.all([
+      book.submit(user, category, state, fee, timestamp, helpers.genCommit()),
+      book.submit(user, category, state, fee, timestamp, helpers.genCommit())
+    ]).then(function() {
+      return book.all();
+    }).then(function(results) {
+      //console.log(results);
+      done();
+    }).catch(done);
+  });
+
   it("should submit new record", function(done) {
     var book = CreditBook.deployed();
 
