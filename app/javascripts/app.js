@@ -206,17 +206,20 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       fee: creditRecord.fee
     }
 
-    credit_book.submit(
-      encodeToBytes32(metaData.identity),
-      metaData.category,
-      metaData.state,
-      metaData.fee,
-      metaData.timestamp,
-      metaData.hash,
-      {from: address}
-    )
+      credit_book.submit(
+        encodeToBytes32(metaData.identity),
+        metaData.category,
+        metaData.state,
+        metaData.fee,
+        metaData.timestamp,
+        metaData.hash,
+        {from: address}
+      ).catch(function(e) {
+        console.log(e)
+      });
 
     // close upload modal
+
     $('#upload-modal').modal('hide');
 
     // TODO: cleanup after create
@@ -302,14 +305,16 @@ angular.element(document).ready(function() {
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var book = {
-      identity: result.args.user,
+      identity: decodeFromBytes32(result.args.user),
       category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
       state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
       fee: result.args.fee.toNumber(),
       timestamp: result.args.timestamp.toString(), // unix timestamp
-      provider: result.args.provider
+      provider: result.args.provider,
+      orderstate: 0
     };
 
+    window.credit_records.push(book);
     $.publish('CreditBook:create', book);
   });
 
