@@ -12,6 +12,7 @@ filters.filter('categoryFilter', function() {
         result = "Collateral Loan"
         break;
       case 2:
+        result = "Guaranteed Loan"
         break;
     }
 
