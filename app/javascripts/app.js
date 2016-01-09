@@ -147,7 +147,7 @@ angular.element(document).ready(function() {
     then(function(records){
       if(records[0].length > 0 ) {
 
-        for(i=0; i<records[0].length; i++) {
+        for(var i=0; i<records[0].length; i++) {
           record = {};
           record.provider = records[0][i].toString();
           record.identity = records[1][i].toString();
@@ -162,7 +162,6 @@ angular.element(document).ready(function() {
         $.publish("CreditBook:list");
       }
     });
-
 
 
   // watch the credit records.
