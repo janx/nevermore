@@ -87,89 +87,95 @@
     <div class="modal-dialog upload-form"  ng-controller="CreateCtrl">
       <h2 class="title">Upload Data</h2>
 
-      <h3 class="caption">Basic Data</h3>
+      <div class="basic-data">
+        <h3 class="caption">Basic Data</h3>
 
-      <div class="form-group">
-        <label for="">Identity</label>
-        <input class="form-control" type="text" ng-model="creditRecord.identity">
-      </div>
-
-      <div class="form-group">
-        <label for="">Category</label>
-        <select class="form-control c-select" id="exampleSelect1"
-          ng-model="creditRecord.category"
-          ng-init="creditRecord.category = creditRecord.category || categoryOptions[0].value"
-          ng-options="option.value as option.name for option in categoryOptions">
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="">Status</label>
-        <select class="form-control c-select" id="exampleSelect1"
-          ng-model="creditRecord.state"
-          ng-init="creditRecord.state = creditRecord.state || stateOptions[0].value"
-          ng-options="option.value as option.name for option in stateOptions">
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="">Price</label>
-        <input class="form-control" type="text" ng-model="creditRecord.fee">
-      </div>
-
-      <h3 class="caption">Detail Data</h3>
-
-      <div class="form-group">
-        <label>Default?</label>
-
-        <div class="radio" ng-init="creditRecord.default = true">
-          <label>
-            <input type="radio" ng-value="true" ng-model="creditRecord.default">
-             YES
-          </label>
-          <label>
-            <input type="radio" ng-value="false" ng-model="creditRecord.default">
-             NO
-          </label>
+        <div class="form-group">
+          <label for="">Identity</label>
+          <input class="form-control" type="text" ng-model="creditRecord.identity">
         </div>
+
+        <div class="form-group">
+          <label for="">Category</label>
+          <select class="form-control c-select" id="exampleSelect1"
+            ng-model="creditRecord.category"
+            ng-init="creditRecord.category = creditRecord.category || categoryOptions[0].value"
+            ng-options="option.value as option.name for option in categoryOptions">
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="">Status</label>
+          <select class="form-control c-select" id="exampleSelect1"
+            ng-model="creditRecord.state"
+            ng-init="creditRecord.state = creditRecord.state || stateOptions[0].value"
+            ng-options="option.value as option.name for option in stateOptions">
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="">Price</label>
+          <input class="form-control" type="text" ng-model="creditRecord.fee">
+        </div>
+
+        <button class="btn btn-primary-outline next-step">Next Step</button>
       </div>
 
-      <div class="form-group">
-        <label for="">Principal</label>
-        <input class="form-control" type="text" ng-model="creditRecords.principal">
-      </div>
+      <div class="detail-data">
+        <h3 class="caption">Detail Data</h3>
 
-      <div class="form-group">
-        <label for="">Annual Interest Rate</label>
-        <input class="form-control" type="text" ng-model="creditRecord.rate">
-      </div>
+        <div class="form-group">
+          <label>Default?</label>
 
-      <div class="form-group">
-        <label for="">Duration</label>
-        <input class="form-control" type="text" placeholder="e.g. 3 days, 3 months , 3 years" ng-model="creditRecord.duration">
-      </div>
+          <div class="radio" ng-init="creditRecord.default = true">
+            <label>
+              <input type="radio" ng-value="true" ng-model="creditRecord.default">
+               YES
+            </label>
+            <label>
+              <input type="radio" ng-value="false" ng-model="creditRecord.default">
+               NO
+            </label>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="">Start Date</label>
-        <input class="form-control" type="date" placeholder="e.g. 2015-01-09" ng-model="creditRecord.start_date">
-      </div>
+        <div class="form-group">
+          <label for="">Principal</label>
+          <input class="form-control" type="text" ng-model="creditRecords.principal">
+        </div>
 
-      <div class="form-group">
-        <label for="">Guarantor</label>
-        <input class="form-control" type="text" ng-model="creditRecord.guarantor">
-      </div>
+        <div class="form-group">
+          <label for="">Annual Interest Rate</label>
+          <input class="form-control" type="text" ng-model="creditRecord.rate">
+        </div>
 
-      <div class="form-group">
-        <label for="">Collateral</label>
-        <input class="form-control" type="text" ng-model="creditRecord.collateral">
-      </div>
+        <div class="form-group">
+          <label for="">Duration</label>
+          <input class="form-control" type="text" placeholder="e.g. 3 days，3 months， 3 years" ng-model="creditRecord.duration">
+        </div>
 
-      <div class="form-group">
-        <label for="">Description</label>
-        <textarea class="form-control" name="name" rows="8" cols="40" ng-model="creditRecord.desc"></textarea>
-      </div>
+        <div class="form-group">
+          <label for="">Start Date</label>
+          <input class="form-control" type="date" placeholder="e.g. 2015-01-09" ng-model="creditRecord.start_date">
+        </div>
 
-      <button class="btn btn-primary-outline confirm" ng-click="createCreditRecord()">Submit</button>
+        <div class="form-group">
+          <label for="">Guarantor</label>
+          <input class="form-control" type="text" ng-model="creditRecord.guarantor">
+        </div>
+
+        <div class="form-group">
+          <label for="">Collateral</label>
+          <input class="form-control" type="text" ng-model="creditRecord.collateral">
+        </div>
+
+        <div class="form-group">
+          <label for="">Description</label>
+          <textarea class="form-control" name="name" rows="8" cols="40" ng-model="creditRecord.desc"></textarea>
+        </div>
+
+        <button class="btn btn-primary-outline confirm" ng-click="createCreditRecord()">Submit</button>
+      </div>
     </div>
   </section>
 

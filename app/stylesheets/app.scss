@@ -117,6 +117,18 @@ body {
       &.advance { color: #92CF7E; }
       &.loaning { color: #8875CC; }
     }
+
+    .start {
+      color: #999;
+    }
+
+    .eye {
+      width: 24px;
+      margin-top: 9px;
+      &.open {
+        cursor: pointer;
+      }
+    }
   }
 
   .checkout {
@@ -160,17 +172,6 @@ body {
     }
   }
 
-  .start {
-    color: #999;
-  }
-
-  .eye {
-    width: 24px;
-    margin-top: 9px;
-    &.open {
-      cursor: pointer;
-    }
-  }
 }
 
 .purchase-form {
@@ -195,6 +196,7 @@ body {
 }
 
 .upload-form {
+  position: relative;
   width: 720px;
   padding: 2em 10em;
   margin: 6em auto;
@@ -203,8 +205,31 @@ body {
   background-color: #fff;
   text-align: left;
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #66afe9;
+  }
+
   .title {
-    margin-bottom: 1em;
+    margin-bottom: 2.4em;
+    color: #66afe9;
+    text-align: center;
+  }
+
+  .basic-data {
+    .next-step {
+      @include center-block();
+    }
+  }
+
+  .detail-data {
+    display: none;
+    margin-top: 36px;
   }
 
   .caption {
@@ -218,11 +243,13 @@ body {
     label {
       color: #999;
       font-weight: normal;
+      font-size: 12px;
     }
   }
 
   .radio label, .checkbox label {
     font-weight: 100;
+    margin-right: 2em;
   }
 
   .confirm {
