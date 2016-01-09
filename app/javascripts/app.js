@@ -7,10 +7,10 @@ filters.filter('categoryFilter', function() {
         result = "Credit Loan";
         break;
       case 1:
-        result = "Category 1"
+        result = "Collateral Loan"
         break;
       case 2:
-        resrlt = "Category 2"
+        result = "Guaranteed Loan"
         break;
     }
 
@@ -24,13 +24,13 @@ filters.filter('stateFilter', function() {
     var result = "";
     switch(input) {
       case 0:
-        result = "On Going";
+        result = "Applying";
         break;
       case 1:
-        result = "Status 1";
+        result = "Ongoing";
         break;
       case 2:
-        result = "Status 2";
+        result = "Complete";
         break;
     }
 
@@ -48,7 +48,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       identity: '111111111111111111',
       category: 0,
       state: 0,
-      providerName: 'ABC',
+      providerName: 'Firm 1',
       providerReputation: 7,
       fee: 10,
       timestamp: 1452268704,
@@ -57,9 +57,9 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     {
       id: '8e6d63757c4aef7808850728f0c0520a4cce3755',
       identity: '111111111111111111',
-      category: 0,
-      state: 0,
-      providerName: 'ABC',
+      category: 1,
+      state: 1,
+      providerName: 'Firm 2',
       providerReputation: 8,
       fee: 20,
       timestamp: 1452268704,
@@ -68,9 +68,9 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     {
       id: 'dd248eae48a38df07eee39e0d5bb7d11ad885f13',
       identity: '111111111111111111',
-      category: 1,
-      state: 1,
-      providerName: 'ABC',
+      category: 2,
+      state: 2,
+      providerName: 'Firm 3',
       providerReputation: 9,
       fee: 30,
       timestamp: 1452268704,
@@ -81,7 +81,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       identity: '111111111111111111',
       category: 1,
       state: 1,
-      providerName: 'ABC',
+      providerName: 'Firm 4',
       providerReputation: 10,
       fee: 40,
       timestamp: 1452268704,
