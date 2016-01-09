@@ -49,7 +49,7 @@
                 <td class="commit">{{cr.commit | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>
                 <td class="status">{{ cr.state | stateFilter }}</td>
-                <td class="provider">{{ cr.providerName }} <p class="start">★★★★★</p></td>
+                <td class="provider">{{ cr.provider | providerName }} <p class="start">★★★★★</p></td>
                 <td class="price">{{ cr.fee | currency:'￥' }}</td>
                 <td class="action uploaded">
                   <img class="eye {{reviewable(cr) ? 'open' : 'close'}}" ng-src="images/eye-{{reviewable(cr) ? 'open' : 'close'}}.svg" ng-click="showDetailData(cr.commit)" alt="">

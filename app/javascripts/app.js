@@ -158,6 +158,17 @@ filters.filter('stateFilter', function() {
   }
 });
 
+filters.filter('providerName', function() {
+  return function(input) {
+    var provider = Providers[input];
+    if(provider) {
+      return provider.name;
+    } else {
+      return 'Unknown';
+    }
+  };
+});
+
 var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
