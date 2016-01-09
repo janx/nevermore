@@ -44,7 +44,7 @@
 
             <tbody>
               <tr class="ban" ng-repeat="cr in creditRecords() | filter: {identity: query}">
-                <td><input type="checkbox" ng-click="changeCart($event, cr)"></td>
+                <td><input type="checkbox" ng-click="changeCart($event, cr)" ng-show="buyable(cr)"></td>
                 <td class="id">445281199xxxx36</td>
                 <td class="hash">{{cr.commit | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>

@@ -12,6 +12,8 @@ window.generageData = function() {
       providerReputation: 7,
       fee: 10,
       timestamp: 1452268704,
+      owner: true,
+      orderstate: 0,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
@@ -23,6 +25,8 @@ window.generageData = function() {
       providerReputation: 8,
       fee: 20,
       timestamp: 1452268704,
+      owner: false,
+      orderstate: 0,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
@@ -34,6 +38,8 @@ window.generageData = function() {
       providerReputation: 9,
       fee: 30,
       timestamp: 1452268704,
+      owner: false,
+      orderstate: 0,
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
@@ -45,11 +51,13 @@ window.generageData = function() {
       providerReputation: 10,
       fee: 40,
       timestamp: 1452268704,
+      owner: false,
+      orderstate: 1,
       source: '43b2aa9c63ca995aa6766977fec06067'
     }
   ]
 
-  for (var i=1; i < data.length; i++) {
+  for (var i=0; i < data.length; i++) {
     window.credit_records.push(data[i]);
   }
 }
@@ -129,6 +137,18 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
 
   $scope.creditRecords = function() {
     return window.credit_records;
+  }
+
+  $scope.buyable = function(cr) {
+    if (cr.owner) {
+      return false;
+    }
+
+    if (cr.orderstate === 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   $scope.cart = cart = [];
