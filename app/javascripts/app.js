@@ -47,7 +47,9 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
   $scope.creditRecords = []
 
   $.subscribe('CreditBook:list', function() {
-    $scope.creditRecords.concat(window.credit_records);
+    $.each(window.credit_records, function(index, value){
+      $scope.creditRecords.push(value);
+    });
   });
 
   $scope.cart = cart = [];
@@ -113,6 +115,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 angular.element(document).ready(function() {
   var address = web3.eth.accounts[0];
   var credit_book = CreditBook.deployed();
+  var order_book = OrderBook.deployed();
 
 
   // initialize credit records
@@ -134,6 +137,12 @@ angular.element(document).ready(function() {
 
         $.publish("CreditBook:list");
       }
+    }).then(function(){
+      // initialize requests
+      order_book.getAllRequests({}).
+        then(function(reqProviders, reqFroms, reqCommits){
+        });
+
     });
 
 
@@ -163,6 +172,18 @@ angular.element(document).ready(function() {
 
   credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
   credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+
+
+  // buy
+  //
+  $.subscribe('CreditRecord:buy', function(event, data){
+    records = data.list
+    for(var i = 0; i < records.length; i++) {
+      var fee = records[i].fee;
+      var commit = records[i].commit;
+
+    }
+  })
 
   // Bootstrap Angualr module
   angular.bootstrap(document, ['Nevermore']);
