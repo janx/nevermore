@@ -305,15 +305,19 @@ body {
     .prompt {
       text-align: right;
       .description {
+        text-align: left;
+
         .title {
           margin-bottom: 1em;
         }
 
-        text-align: left;
-      }
-
-      .purchase {
-        margin-top: 24px;
+        p {
+          margin-bottom: 1em;
+          font-size: 12px;
+          b {
+            color: #333;
+          }
+        }
       }
     }
   }
@@ -324,6 +328,10 @@ body {
     border: 1px solid #ececec;
     margin-bottom: 1em;
     text-align: left;
+
+    &:hover {
+      background-color: rgba(169, 210, 243, 0.08);
+    }
 
     p {
       margin-bottom: 1em;
