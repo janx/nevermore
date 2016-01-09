@@ -33,27 +33,35 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
 }]);
 
 angular.element(document).ready(function() {
-  // Try to communicate with blockchain
-  var book = CreditBook.deployed();
   var address = web3.eth.accounts[0]
 
-  var events = book.allEvents({fromBlock: 0, toBlock: 'latest'});
+  // watch the credit records.
+  var credit_book = CreditBook.deployed();
 
-  var events = book.NewRecord({}, {fromBlock: 0, toBlock: 'latest', address: CreditBook.deployed_address}, function(error, result) {
+  credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var book = {
       identity: result.args.user,
       category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
       state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
       fee: result.args.fee.toNumber(),
       timestamp: result.args.timestamp.toString(), // unix timestamp
-      source: result.args.source
+      provider: result.args.provider
     };
 
     $.publish('CreditBook:create', book);
   });
 
-  book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  // watch the requests
+
+  request_book = OrderBook.deployed();
+  request_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
+    var request = {
+    }
+  });
+
+
+  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
   // Bootstrap Angualr module
   angular.bootstrap(document, ['Nevermore']);
