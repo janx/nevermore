@@ -277,7 +277,7 @@ angular.element(document).ready(function() {
 
 
   // initialize credit records
-  credit_book.all({}).  then(function(records){
+  credit_book.all({}).then(function(records){
     if(records[0].length > 0 ) {
       for(var i=0; i<records[0].length; i++) {
         record = {};
@@ -294,6 +294,7 @@ angular.element(document).ready(function() {
         } else {
           record.owner = false;
         }
+        window.credit_records.push(record);
       }
     }
   }).then(function(){
@@ -317,8 +318,6 @@ angular.element(document).ready(function() {
             if(record.commit === request.commit){
               record.orderstate = 1;
             }
-
-
 
           });
         }
@@ -360,11 +359,16 @@ angular.element(document).ready(function() {
       fee: result.args.fee.toNumber(),
       timestamp: result.args.timestamp.toString(), // unix timestamp
       provider: result.args.provider,
+      commit: result.args.commit,
       orderstate: 0,
       owner: own
     };
 
-    window.credit_records.push(book);
+    $.each(window.credit_records, function(index, record) {
+      if(record.commit !== book.commit) {
+        window.credit_records.push(book);
+      }
+    });
     $.publish('CreditBook:create', book);
   });
 
@@ -390,7 +394,7 @@ angular.element(document).ready(function() {
       });
     }
 
-    $.requests.push(request)
+    window.requests.push(request)
 
     if(address === request.from) {
       $.publish('notice', 'Request send successfully.')
@@ -401,15 +405,18 @@ angular.element(document).ready(function() {
     }
   });
 
-
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+  order_book.NewResponse({}, {address: OrderBook.deployed_address}, function(error, result) {
+  });
 
 
+  var user2 = web3.eth.accounts[1]
+
+  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
 
   // buy
   $.subscribe('CreditRecord:buy', function(event, data){
