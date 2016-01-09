@@ -103,20 +103,22 @@
           <p class="description">36 ITEMS</p>
         </div>
 
-        <button class="btn btn-primary-outline purchase">Purchase</button>
+        <button class="btn btn-primary-outline purchase" data-toggle="modal" data-target="#purchase-modal">Purchase</button>
       </div>
 
     </section>
 
-    <section class="purchase-form">
-      <h2 class="title">Purchase</h2>
+    <section class="modal fade purchase-form" id="purchase-modal" tabindex="-1" role="dialog" aria-labelledby="purchase-modal">
+      <div class="modal-dialog">
+        <h2 class="title">Purchase</h2>
 
-      <form action="">
-        <input type="hidden">
+        <form action="">
+          <input type="hidden">
 
-        <p class="price">￥1,193,62</p>
-        <button class="btn btn-primary-outline confirm">Confirm</button>
-      </form>
+          <p class="price">￥1,193,62</p>
+          <button class="btn btn-primary-outline confirm">Confirm</button>
+        </form>
+      </div>
     </section>
 
     <section class="upload-form">

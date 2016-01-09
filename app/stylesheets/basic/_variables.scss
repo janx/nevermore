@@ -58,6 +58,7 @@ $input-border-focus:             #66afe9 !default;
 $input-color-placeholder:        #999 !default;
 
 $form-group-margin-bottom:       1rem !default;
+
 // Tables
 
 $table-cell-padding:            .75rem !default;
@@ -65,6 +66,24 @@ $table-bg-hover:                #F1F8FD !default;
 $table-border-color:            #CAE5F9 !default;
 
 // Modals
+
+$zindex-modal-bg:          1040 !default;
+$zindex-modal:             1050 !default;
+
+$modal-title-padding:         15px !default;
+// $modal-title-line-height:     $line-height !default;
+
+$modal-content-bg:                             #fff !default;
+$modal-content-border-color:                   rgba(0,0,0,.2) !default;
+
+$modal-backdrop-bg:           #000 !default;
+$modal-backdrop-opacity:      .5 !default;
+$modal-header-border-color:   #e5e5e5 !default;
+$modal-footer-border-color:   $modal-header-border-color !default;
+
+$modal-lg:                    900px !default;
+$modal-md:                    600px !default;
+$modal-sm:                    300px !default;
 
 // Breadcrumbs
 
