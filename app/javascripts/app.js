@@ -1,4 +1,5 @@
 window.credit_records = []
+window.requests = []
 
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
@@ -116,6 +117,7 @@ angular.element(document).ready(function() {
   var address = web3.eth.accounts[0];
   var credit_book = CreditBook.deployed();
   var order_book = OrderBook.deployed();
+  order_book.setCreditBook(CreditBook.deployed_address, {from: address});
 
 
   // initialize credit records
@@ -132,6 +134,7 @@ angular.element(document).ready(function() {
           record.fee = records[4][i].toNumber();
           record.timestamp = records[5][i].toNumber();
           record.commit = records[6][i].toString();
+          record.orderstate = 0;
           window.credit_records.push(record);
         }
 
@@ -140,40 +143,66 @@ angular.element(document).ready(function() {
     }).then(function(){
       // initialize requests
       order_book.getAllRequests({}).
-        then(function(reqProviders, reqFroms, reqCommits){
+        then(function(result){
+          for(var i=0; i < result[0].length; i++) {
+            request = {};
+            request.provider = result[0][i];
+            request.from = result[1][i];
+            request.commit = result[2][i];
+            window.requests.push(request);
+
+            related = false;
+            $.each(web3.eth.accounts, function(index, value) {
+              if(value === request.from) {
+                related = true;
+              }
+            });
+
+            if(related) {
+              $.each(window.credit_records, function(index, record) {
+                if(record.commit === request.commit){
+                  record.orderstate = 1;
+                }
+              });
+            }
+          }
+        }).then(function(result){
+          // debugger
+          // merge response
         });
     });
 
-  // watch the credit records.
+    // watch the credit records.
 
-  credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
-    var book = {
-      identity: result.args.user,
-      category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
-      state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
-      fee: result.args.fee.toNumber(),
-      timestamp: result.args.timestamp.toString(), // unix timestamp
-      provider: result.args.provider
-    };
+    credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
+      var book = {
+        identity: result.args.user,
+        category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
+        state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
+        fee: result.args.fee.toNumber(),
+        timestamp: result.args.timestamp.toString(), // unix timestamp
+        provider: result.args.provider
+      };
 
-    $.publish('CreditBook:create', book);
-  });
+      $.publish('CreditBook:create', book);
+    });
 
-  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
-  credit_book.submit('0xc305c901078781c232a2a521c2af7980f8385ee9',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+    credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
+    credit_book.submit('11111111111111111111111111111',0,0,1,2718281828, new Date().getTime().toString(), {from: address});
 
 
-  // buy
-  //
-  $.subscribe('CreditRecord:buy', function(event, data){
-    records = data.list
-    for(var i = 0; i < records.length; i++) {
-      var fee = records[i].fee;
-      var commit = records[i].commit;
-      order_book.submitRequest(commit, {value: fee});
-    }
-  })
+    // buy
+    //
+    $.subscribe('CreditRecord:buy', function(event, data){
+      records = data.list
+      for(var i = 0; i < records.length; i++) {
+        var fee = records[i].fee;
+        var commit = records[i].commit;
 
-  // Bootstrap Angualr module
-  angular.bootstrap(document, ['Nevermore']);
+        order_book.submitRequest(commit, {value: fee, from: address});
+      }
+    })
+
+    // Bootstrap Angualr module
+    angular.bootstrap(document, ['Nevermore']);
 });
