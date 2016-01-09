@@ -140,6 +140,9 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       {from: address}
     )
 
+    // close upload modal
+    $('#upload-modal').modal('hide');
+
     // TODO: cleanup after create
     // TODO: store detail data to localStorage
   }
