@@ -1,15 +1,11 @@
+var helpers = require('./test_helper.js');
+
 contract('CreditBook', function(accounts) {
-  var user = '0x0000000000000000000000000000000000000000000000000000000012345678';
+  var user = helpers.toBytes32('ffff');
   var category = 0;
   var state = 0;
   var fee = 100;
   var timestamp = 2718281828;
-
-  var commit = 0;
-  var genCommit = function() {
-    commit += 1;
-    return ''+commit;
-  };
 
   it("should set owner on contract creation", function(done) {
     var book = CreditBook.deployed();
@@ -24,12 +20,26 @@ contract('CreditBook', function(accounts) {
     var book = CreditBook.deployed();
 
     Promise.all([
-      book.submit(user, category, state, fee, timestamp, genCommit()),
-      book.submit(user, category, state, fee, timestamp, genCommit())
+      book.submit(user, category, state, fee, timestamp, helpers.genCommit()),
+      book.submit(user, category, state, fee, timestamp, helpers.genCommit())
     ]).then(function() {
       return book.size();
     }).then(function(size) {
       assert.equal('2', size.toString());
+      done();
+    }).catch(done);
+  });
+
+  it("should all records", function(done) {
+    var book = CreditBook.deployed();
+
+    Promise.all([
+      book.submit(user, category, state, fee, timestamp, helpers.genCommit()),
+      book.submit(user, category, state, fee, timestamp, helpers.genCommit())
+    ]).then(function() {
+      return book.all();
+    }).then(function(results) {
+      //console.log(results);
       done();
     }).catch(done);
   });
@@ -53,7 +63,7 @@ contract('CreditBook', function(accounts) {
           done();
         }).catch(done);
 
-      book.submit(user, category, state, fee, timestamp, genCommit());
+      return book.submit(user, category, state, fee, timestamp, helpers.genCommit());
     }).catch(done);
   });
 
@@ -74,7 +84,7 @@ contract('CreditBook', function(accounts) {
   it("should validate user hash", function(done) {
     var book = CreditBook.deployed();
 
-    book.submit(0, category, state, fee, timestamp, genCommit())
+    book.submit(0, category, state, fee, timestamp, helpers.genCommit())
       .then(function(txid) {
         assert(!txid, "submit succeed!");
       }).catch(function(e) {
@@ -86,7 +96,7 @@ contract('CreditBook', function(accounts) {
   it("should validate timestamp", function(done) {
     var book = CreditBook.deployed();
 
-    book.submit(user, category, state, fee, 0, genCommit())
+    book.submit(user, category, state, fee, 0, helpers.genCommit())
       .then(function(txid) {
         assert(!txid, "submit succeed!");
       }).catch(function(e) {
