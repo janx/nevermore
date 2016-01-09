@@ -225,9 +225,9 @@ angular.element(document).ready(function() {
       data.state,
       data.fee,
       data.timestamp,
-      provider: {from: address}
+      {from: address}
     )
-  }
+  });
 
   // buy
   //
