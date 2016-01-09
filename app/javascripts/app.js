@@ -118,8 +118,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 
   $scope.creditRecord = creditRecord = {};
 
-  $scope.createCreditBook = function() {
-
+  $scope.createCreditRecord = function() {
     var metaData = {
       identity: creditRecord.identity,
       hash: makeHash(creditRecord),     // Generated
