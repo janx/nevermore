@@ -44,7 +44,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
 
   $scope.creditRecords = [
     {
-      id: 'ccb5c3f944732008d5c8b13a6c928f673bee8126',
+      commit: 'ccb5c3f944732008d5c8b13a6c928f673bee8126',
       identity: '111111111111111111',
       category: 0,
       state: 0,
@@ -55,7 +55,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
-      id: '8e6d63757c4aef7808850728f0c0520a4cce3755',
+      commit: '8e6d63757c4aef7808850728f0c0520a4cce3755',
       identity: '111111111111111111',
       category: 1,
       state: 1,
@@ -66,7 +66,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
-      id: 'dd248eae48a38df07eee39e0d5bb7d11ad885f13',
+      commit: 'dd248eae48a38df07eee39e0d5bb7d11ad885f13',
       identity: '111111111111111111',
       category: 2,
       state: 2,
@@ -77,7 +77,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       source: '43b2aa9c63ca995aa6766977fec06067'
     },
     {
-      id: 'aac65e92e5c17278a2df111dc17042f65a8aca56',
+      commit: 'aac65e92e5c17278a2df111dc17042f65a8aca56',
       identity: '111111111111111111',
       category: 1,
       state: 1,
@@ -90,6 +90,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
   ]
 
   $scope.cart = cart = [];
+
   $scope.changeCart = function($event, cr) {
     var checkbox = $event.target;
     var action = (checkbox.checked ? 'add' : 'remove');
@@ -102,6 +103,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       }
     }
   }
+
   $scope.getTotal = function() {
     var total = 0;
     for (var i = 0; i < $scope.cart.length; i++) {
@@ -109,10 +111,15 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
     }
     return total;
   }
-  $scope.buy = function() {
-    // TODO: process the order payment
-  }
 
+  $scope.buy = function() {
+    var list = [];
+    for (var i=0; i < cart.length; i ++) {
+      list.push(cart[i].commit);
+    }
+
+    $.publish('CreditRecord:buy', list);
+  }
 }]);
 
 
