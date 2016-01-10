@@ -574,7 +574,9 @@ angular.element(document).ready(function() {
       var secret = encryptForProvider(request.provider, aesKey);
       var encryptedData = aesEncrypt(secret, data);
       console.log("Auto respond to request: " + request);
-      $.publish('Response:new', {commit: commit, secret: secret, content: encryptedData});
+      setTimeout(function(){
+        $.publish('Response:new', {commit: commit, secret: secret, content: encryptedData});
+      }, 5000);
     }
   });
 
