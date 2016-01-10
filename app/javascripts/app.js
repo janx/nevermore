@@ -374,7 +374,6 @@ angular.element(document).ready(function() {
    });
 
    console.log('Response:new', event, data);
-   // FIXME, it's not work
    order_book.submitResponse(id, data.secret, data.content, {from: currentUser});
   });
 
@@ -426,17 +425,20 @@ angular.element(document).ready(function() {
         }
       }
     }).then(function(result){
+      // init responses
       order_book.getAllResponses({from: currentUser}).then(function(result){
         // order_book.submitResponse(2, 'ffff', "ffff", {from: currentUser})
         //
         $.each(result, function(index, value) {
           if(value !== "0x0000000000000000000000000000000000000000000000000000000000000000") {
             var commit = window.requests[index].commit;
-            $.each(window.credit_records, function(index, value) {
-              if(value === commit) {
-                value.orderstate = 2;
-              }
-            });
+            if(requests[index].from === currentUser) {
+              $.each(window.credit_records, function(index, value) {
+                if(value.commit === commit) {
+                  value.orderstate = 2;
+                }
+              });
+            }
           }
         });
 
@@ -483,7 +485,6 @@ angular.element(document).ready(function() {
         }
       });
       if(!included) {
-        //debugger
         console.log("New record:", result);
         window.credit_records.push(book);
       }
@@ -535,10 +536,15 @@ angular.element(document).ready(function() {
 
   order_book.NewResponse({}, {address: OrderBook.deployed_address}, function(error, result) {
     var id = result.args.id.toNumber();
-    // FIXME: here should be id -1 or id
-    request = window.requests[id - 1]
+    request = window.requests[id]
     if(currentUser === request.from) {
-      $.publish('notice', 'Yur request has been response');
+      $.publish('notice', 'Your request has been responsed.');
+
+      $.each(credit_records, function(index, value) {
+        if(value.commit === request.commit) {
+          value.orderstate = 2;
+        }
+      });
     }
     if(currentUser === request.provider) {
       $.publish('notice', 'Your response has been sent automatically.');
