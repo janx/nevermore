@@ -563,7 +563,7 @@ angular.element(document).ready(function() {
     var data = localStorage.getItem(commit);
     console.log("New request received", request);
     if (data) {
-      var aesKey = encodeToBytes32(''+newDate().getTime());
+      var aesKey = encodeToBytes32(''+ (new Date()).getTime());
       var secret = encryptForProvider(request.provider, aesKey);
       var encryptedData = aesEncrypt(secret, data);
       console.log("Auto respond to request: " + request);
