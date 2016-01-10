@@ -24,7 +24,7 @@ var nonce = 0;
 function randomBytes32() {
   var timestamp = new Date().getTime();
   nonce += 1
-  return encodeToBytes32(''+nonce+timestamp).slice(0,64);
+  return web3.sha3(''+nonce+timestamp, {encoding: 'hex'});
 }
 
 function generateRecords() {
@@ -483,7 +483,8 @@ angular.element(document).ready(function() {
         }
       });
       if(!included) {
-        debugger
+        //debugger
+        console.log("New record:", result);
         window.credit_records.push(book);
       }
       $.publish('CreditBook:create', book);
@@ -563,7 +564,7 @@ angular.element(document).ready(function() {
     var data = localStorage.getItem(commit);
     console.log("New request received", request);
     if (data) {
-      var aesKey = encodeToBytes32(''+newDate().getTime());
+      var aesKey = randomBytes32();
       var secret = encryptForProvider(request.provider, aesKey);
       var encryptedData = aesEncrypt(secret, data);
       console.log("Auto respond to request: " + request);
