@@ -44,7 +44,7 @@
 
             <tbody>
               <tr class="ban" ng-class="{owner: cr.owner}" ng-repeat="cr in (creditRecords() | filter: {identity: query}) track by $index">
-                <td><input type="checkbox" ng-click="changeCart($event, cr)" ng-show="buyable(cr)"></td>
+                <td><input type="checkbox" ng-click="changeCart($event, cr)" ng-disabled="!buyable(cr)"></td>
                 <td class="id">{{ cr.identity }}</td>
                 <td class="commit">{{cr.commit | limitTo: 8 }}</td>
                 <td class="type">{{ cr.category | categoryFilter }}</td>
