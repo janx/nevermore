@@ -484,6 +484,14 @@ angular.element(document).ready(function() {
 
   // watch request
   order_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
+    var req;
+    $.each(window.requests, function(i, r) {
+      if(r.id === result.args.id.toNumber()) {
+        req = r;
+      }
+    });
+    if(req) return;
+
     var request = {
       id: result.args.id.toNumber(),
       provider: result.args.provider,
