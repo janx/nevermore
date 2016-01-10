@@ -1,5 +1,40 @@
+window.currentUser = null;
+
 window.credit_records = []
 window.requests = []
+
+window.Providers = {
+  "0x82a978b3f5962a5b0957d9ee9eef472ee55b42f1": {
+    name: "CreditSoft",
+    pubkey: "0xffff"
+  },
+  "0x7d577a597b2742b498cb5cf0c26cdcd726d39e6e": {
+    name: "SocialHard",
+    pubkey: "0xeeee"
+  },
+  "0xdceceaf3fc5c0a63d195d69b1a90011b7b19650d": {
+    name: "BlackScore",
+    pubkey: "0xdddd"
+  }
+};
+
+// fixtures
+
+var nonce = 0;
+function randomBytes32() {
+  var timestamp = new Date().getTime();
+  nonce += 1
+  return web3.sha3(''+nonce+timestamp, {encoding: 'hex'});
+}
+
+function generateRecords() {
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+}
 
 window.generageData = function() {
 
@@ -92,6 +127,17 @@ var decodeFromBytes32 = function(hex) {
 }
 
 
+var encryptForProvider = function(provider, pt) {
+  // mock provider pubkey encrypt
+  var pubkey = Providers[provider].pubkey;
+  return encodeToBytes32(pubkey+pt).slice(0,64);
+}
+
+var aesEncrypt = function(key, pt) {
+  // mock aes encryption
+  return encodeToBytes32("aes encrypted"+pt);
+}
+
 var filters = angular.module('neverMoreFilters', [])
 filters.filter('categoryFilter', function() {
   return function(input) {
@@ -132,6 +178,17 @@ filters.filter('stateFilter', function() {
   }
 });
 
+filters.filter('providerName', function() {
+  return function(input) {
+    var provider = Providers[input];
+    if(provider) {
+      return provider.name;
+    } else {
+      return 'Unknown';
+    }
+  };
+});
+
 var app = angular.module('Nevermore', ['neverMoreFilters']);
 
 app.controller('SearchCtrl', ['$scope', function ($scope) {
@@ -161,6 +218,20 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  var source = $("#detail-data-template").html();
+  var template = Handlebars.compile(source);
+  $scope.showDetailData = function(commit) {
+    console.log('showDetailData', commit);
+    var data = localStorage.getItem(commit);
+    var dataModal = $('#detail-data-modal')
+    if (data) {
+      data = angular.fromJson(data)
+      dataModal.find('.card').html(template(data))
+      dataModal.find('.identity').text("ID: " + data.identity)
+      dataModal.modal('show');
     }
   }
 
@@ -222,7 +293,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
   function makeHash(creditRecord) {
     // TODO: make a better rule for generate hash
     var msg = "" + creditRecord.identity + (new Date()).toString()
-    return SHA256(msg);
+    return '0x' + web3.sha3(msg, {encoding: "hex"});
   }
 
   $scope.categoryOptions = [
@@ -241,6 +312,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
   $scope.createCreditRecord = function() {
     var commit = makeHash(creditRecord)
 
+    console.log(commit);
     var data = {
       commit: commit,
       identity: creditRecord.identity,
@@ -260,6 +332,8 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 
     localStorage.setItem(commit, angular.toJson(data));
 
+    // TODO: reset form after create
+
     credit_book.submit(
       encodeToBytes32(data.identity),
       data.category,
@@ -267,37 +341,22 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       data.fee,
       data.timestamp,
       data.commit,
-      {from: address}
+      {from: currentUser}
     ).catch(function(e) {
       console.log(e)
     });
 
     // close upload modal
-
     $('#upload-modal').modal('hide');
-
-    // TODO: cleanup after create
-    // TODO: store detail data to localStorage
   }
 
 }]);
 
 angular.element(document).ready(function() {
-  window.address = web3.eth.accounts[0];
   window.credit_book = CreditBook.deployed();
   window.order_book = OrderBook.deployed();
-  order_book.setCreditBook(CreditBook.deployed_address, {from: address});
-
-  // fixtures
-
-  // var user2 = web3.eth.accounts[1]
-
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  window.currentUser = localStorage.getItem("currentUser") || web3.eth.accounts[0];
+  order_book.setCreditBook(CreditBook.deployed_address, {from: currentUser});
 
 
   // flash
@@ -314,8 +373,9 @@ angular.element(document).ready(function() {
      }
    });
 
+   console.log('Response:new', event, data);
    // FIXME, it's not work
-   order_book.submitResponse(id, data.secret, data.content, {from: address});
+   order_book.submitResponse(id, data.secret, data.content, {from: currentUser});
   });
 
 
@@ -332,7 +392,7 @@ angular.element(document).ready(function() {
         record.timestamp = records[5][i].toNumber();
         record.commit = records[6][i].toString();
         record.orderstate = 0;
-        if(address === record.provider) {
+        if(currentUser === record.provider) {
           record.owner = true;
         } else {
           record.owner = false;
@@ -352,7 +412,7 @@ angular.element(document).ready(function() {
         window.requests.push(request);
 
         related = false;
-        if(address === request.from) {
+        if(currentUser === request.from) {
           related = true;
         }
 
@@ -366,8 +426,8 @@ angular.element(document).ready(function() {
         }
       }
     }).then(function(result){
-      order_book.getAllResponses({from: address}).then(function(result){
-        // order_book.submitResponse(2, 'ffff', "ffff", {from: address})
+      order_book.getAllResponses({from: currentUser}).then(function(result){
+        // order_book.submitResponse(2, 'ffff', "ffff", {from: currentUser})
         //
         $.each(result, function(index, value) {
           if(value !== "0x0000000000000000000000000000000000000000000000000000000000000000") {
@@ -391,32 +451,57 @@ angular.element(document).ready(function() {
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var own = false
-    if(address === result.args.provider) {
+    if(currentUser === result.args.provider) {
       own = true
     }
 
-    var book = {
-      identity: decodeFromBytes32(result.args.user),
-      category: result.args.category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
-      state: result.args.state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
-      fee: result.args.fee.toNumber(),
-      timestamp: result.args.timestamp.toString(), // unix timestamp
-      provider: result.args.provider,
-      commit: result.args.commit,
-      orderstate: 0,
-      owner: own
-    };
+    var commit = result.args.commit;
+    credit_book.get(commit).then(function(record) {
+      var provider = record[0];
+      var identity = record[1];
+      var category = record[2];
+      var state = record[3];
+      var fee = record[4];
+      var timestamp = record[5];
 
-    $.each(window.credit_records, function(index, record) {
-      if(record.commit !== book.commit) {
+      var book = {
+        identity: decodeFromBytes32(identity),
+        category: category.toNumber(), // 0: 信用贷款 1: 担保贷款  2: 抵押贷款
+        state: state.toNumber(), // 0: 申请中 1: 进行中 2: 已完结
+        fee: fee.toNumber(),
+        timestamp: timestamp.toString(), // unix timestamp
+        provider: provider,
+        commit: commit,
+        orderstate: 0,
+        owner: own
+      };
+
+      var included = false
+      $.each(window.credit_records, function(index, record) {
+        if(record.commit === book.commit) {
+          included = true
+        }
+      });
+      if(!included) {
+        //debugger
+        console.log("New record:", result);
         window.credit_records.push(book);
       }
+      $.publish('CreditBook:create', book);
+    }).catch(function(e) {
     });
-    $.publish('CreditBook:create', book);
   });
 
   // watch request
   order_book.NewRequest({}, { address: OrderBook.deployed_address}, function(error, result) {
+    var req;
+    $.each(window.requests, function(i, r) {
+      if(r.id === result.args.id.toNumber()) {
+        req = r;
+      }
+    });
+    if(req) return;
+
     var request = {
       id: result.args.id.toNumber(),
       provider: result.args.provider,
@@ -425,7 +510,7 @@ angular.element(document).ready(function() {
     }
 
     related = false;
-    if(address === request.from) {
+    if(currentUser === request.from) {
       related = true;
     }
 
@@ -438,11 +523,11 @@ angular.element(document).ready(function() {
     }
 
     window.requests.push(request)
-    if(address === request.from) {
+    if(currentUser === request.from) {
       $.publish('notice', 'Request send successfully.');
     }
 
-    if(address === request.provider) {
+    if(currentUser === request.provider) {
       $.publish('notice', 'You received a request.');
       $.publish('Request:create', request)
     }
@@ -452,10 +537,10 @@ angular.element(document).ready(function() {
     var id = result.args.id.toNumber();
     // FIXME: here should be id -1 or id
     request = window.requests[id - 1]
-    if(address === request.from) {
+    if(currentUser === request.from) {
       $.publish('notice', 'Yur request has been response');
     }
-    if(address === request.provider) {
+    if(currentUser === request.provider) {
       $.publish('notice', 'Your response has been sent automatically.');
     }
   });
@@ -467,7 +552,7 @@ angular.element(document).ready(function() {
       var fee = records[i].fee;
       var commit = records[i].commit;
 
-      order_book.submitRequest(commit, {value: fee, from: address});
+      order_book.submitRequest(commit, {value: fee, from: currentUser});
     }
   })
 
@@ -477,9 +562,13 @@ angular.element(document).ready(function() {
     var pubkey = request.from;
 
     var data = localStorage.getItem(commit);
+    console.log("New request received", request);
     if (data) {
-      // FIXME: secret should not be hard code.
-      $.publish('Response:new', {commit: commit, secret: 'eeee', content: data});
+      var aesKey = randomBytes32();
+      var secret = encryptForProvider(request.provider, aesKey);
+      var encryptedData = aesEncrypt(secret, data);
+      console.log("Auto respond to request: " + request);
+      $.publish('Response:new', {commit: commit, secret: secret, content: encryptedData});
     }
   });
 

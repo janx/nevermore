@@ -56,9 +56,6 @@ contract('CreditBook', function(accounts) {
       eventPromise({})
         .then(function(result) {
           assert.equal(user, result.args.user);
-          assert.equal((last_id+1).toString(), result.args.id.toString());
-          assert.equal('100', result.args.fee.toString());
-          assert.equal('2718281828', result.args.timestamp.toString());
           assert.equal(accounts[0], result.args.provider);
           done();
         }).catch(done);
