@@ -130,7 +130,7 @@ var decodeFromBytes32 = function(hex) {
 var encryptForProvider = function(provider, pt) {
   // mock provider pubkey encrypt
   var pubkey = Providers[provider].pubkey;
-  return encodeToBytes32(pubkey+aesKey+pt).slice(0,64);
+  return encodeToBytes32(pubkey+pt).slice(0,64);
 }
 
 var aesEncrypt = function(key, pt) {
