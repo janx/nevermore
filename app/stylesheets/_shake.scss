@@ -101,3 +101,4 @@ $trigger: 'shake-trigger' !default;
 .#{$trigger}:hover .#{$prefix}-freeze { @extend %running; }
 
 .shake            { @include do-shake(); }
+.shake-slow       { @include do-shake('shake-slow', 20, 20, 7, 5s); }

@@ -279,9 +279,15 @@
     </div>
   </section>
 
+  <footer class="footer">
+    <a href="https://github.com/janx/nevermore" target="_blank">
+      <img class="github shake-slow" src="images/github.svg" alt="">
+    </a>
+  </footer>
+
   <script id="detail-data-template" type="text/x-handlebars-template">
     <div class="item">
-      <p class="default no">Default: {{default}}</p>
+      <p class="default" ng-class="{yes: default, no: !default}">Default: {{default}}</p>
       <p>Principal: {{principal}}</p>
       <p>Annualized Rate: {{rate}}</p>
       <p>Guarantor: {{guarantor}}</p>
