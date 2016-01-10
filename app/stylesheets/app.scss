@@ -58,7 +58,7 @@ body {
 }
 
 .main {
-  @include center-block(120px, 0);
+  @include center-block(180px, 0);
   position: relative;
   flex-direction: column;
   width: 780px;

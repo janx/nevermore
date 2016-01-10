@@ -3,6 +3,8 @@ $(function() {
   var nextStepBtn = $('.btn.next-step')
   var detailData = $('.detail-data')
 
+  // $('.search .form-control').focus()
+
   uploadBtn.on('click', function(e) {
     e.preventDefault()
 
@@ -11,8 +13,6 @@ $(function() {
   })
 
   nextStepBtn.on('click', function() {
-    console.log('click')
-
     $(this).fadeOut()
     detailData.fadeIn(1000)
   })
