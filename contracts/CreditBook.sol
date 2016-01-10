@@ -29,7 +29,7 @@ contract CreditBook is owned, mortal {
 
   mapping(bytes32 => uint256) public commits;
 
-  event NewRecord(bytes32 indexed user, uint16 indexed category, uint16 indexed state, uint256 fee, uint256 timestamp, address provider, uint256 id);
+  event NewRecord(bytes32 indexed user, uint16 indexed category, uint16 indexed state, address provider, bytes32 commit);
 
   function CreditBook() {
     owner = msg.sender;
@@ -64,7 +64,7 @@ contract CreditBook is owned, mortal {
     record_commits.push(commit);
     //records[commit] = Record(msg.sender, user, category, state, fee, timestamp);
 
-    NewRecord(user, category, state, fee, timestamp, msg.sender, commits[commit]);
+    NewRecord(user, category, state, msg.sender, commit);
   }
 
 }
