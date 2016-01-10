@@ -24,16 +24,43 @@ var nonce = 0;
 function randomBytes32() {
   var timestamp = new Date().getTime();
   nonce += 1
-  return web3.sha3(''+nonce+timestamp, {encoding: 'hex'});
+  return '0x'+web3.sha3(''+nonce+timestamp, {encoding: 'hex'});
+}
+
+function genRec() {
+  var commit = randomBytes32();
+  var identity = encodeToBytes32('112123234323456787');
+  var category = 0;
+  var state = 0;
+  var fee = 1;
+  var timestamp = Math.floor(new Date() / 1000);
+
+  var data = {
+    commit: commit,
+    identity: identity,
+    category: category,
+    state: state,
+    timestamp: timestamp,
+    fee: fee,
+    default: null,
+    principal: null,
+    rate: null,
+    duration: null,
+    start_date: null,
+    guarantor: null,
+    collateral: null,
+    desc:null
+  };
+
+  localStorage.setItem(commit, angular.toJson(data));
+  return credit_book.submit(identity,category,state,fee,timestamp, commit, {from: currentUser});
 }
 
 function generateRecords() {
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
-  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  Promise.all([genRec(), genRec(), genRec(), genRec(), genRec(), genRec()])
+    .then(function(results) {
+      console.log("records generated:", results);
+    });
 }
 
 window.generageData = function() {
