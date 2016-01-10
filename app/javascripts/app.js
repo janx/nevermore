@@ -1,3 +1,5 @@
+window.currentUser = null;
+
 window.credit_records = []
 window.requests = []
 
@@ -15,6 +17,24 @@ window.Providers = {
     pubkey: "0xdddd"
   }
 };
+
+// fixtures
+
+var nonce = 0;
+function randomBytes32() {
+  var timestamp = new Date().getTime();
+  nonce += 1
+  return encodeToBytes32(''+nonce+timestamp).slice(0,64);
+}
+
+function generateRecords() {
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+  credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, randomBytes32(), {from: currentUser});
+}
 
 window.generageData = function() {
 
@@ -321,7 +341,7 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       data.fee,
       data.timestamp,
       data.commit,
-      {from: address}
+      {from: currentUser}
     ).catch(function(e) {
       console.log(e)
     });
@@ -333,21 +353,10 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 }]);
 
 angular.element(document).ready(function() {
-  window.address = web3.eth.accounts[0];
   window.credit_book = CreditBook.deployed();
   window.order_book = OrderBook.deployed();
-  order_book.setCreditBook(CreditBook.deployed_address, {from: address});
-
-  // fixtures
-
-  // var user2 = web3.eth.accounts[1]
-
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
-  // credit_book.submit(encodeToBytes32('112123234323456787'),0,0,1,2718281828, new Date().getTime().toString(), {from: user2});
+  window.currentUser = localStorage.getItem("currentUser") || web3.eth.accounts[0];
+  order_book.setCreditBook(CreditBook.deployed_address, {from: currentUser});
 
 
   // flash
@@ -366,7 +375,7 @@ angular.element(document).ready(function() {
 
    console.log('Response:new', event, data);
    // FIXME, it's not work
-   order_book.submitResponse(id, data.secret, data.content, {from: address});
+   order_book.submitResponse(id, data.secret, data.content, {from: currentUser});
   });
 
 
@@ -383,7 +392,7 @@ angular.element(document).ready(function() {
         record.timestamp = records[5][i].toNumber();
         record.commit = records[6][i].toString();
         record.orderstate = 0;
-        if(address === record.provider) {
+        if(currentUser === record.provider) {
           record.owner = true;
         } else {
           record.owner = false;
@@ -403,7 +412,7 @@ angular.element(document).ready(function() {
         window.requests.push(request);
 
         related = false;
-        if(address === request.from) {
+        if(currentUser === request.from) {
           related = true;
         }
 
@@ -417,8 +426,8 @@ angular.element(document).ready(function() {
         }
       }
     }).then(function(result){
-      order_book.getAllResponses({from: address}).then(function(result){
-        // order_book.submitResponse(2, 'ffff', "ffff", {from: address})
+      order_book.getAllResponses({from: currentUser}).then(function(result){
+        // order_book.submitResponse(2, 'ffff', "ffff", {from: currentUser})
         //
         $.each(result, function(index, value) {
           if(value !== "0x0000000000000000000000000000000000000000000000000000000000000000") {
@@ -442,7 +451,7 @@ angular.element(document).ready(function() {
 
   credit_book.NewRecord({}, { address: CreditBook.deployed_address}, function(error, result) {
     var own = false
-    if(address === result.args.provider) {
+    if(currentUser === result.args.provider) {
       own = true
     }
 
@@ -500,7 +509,7 @@ angular.element(document).ready(function() {
     }
 
     related = false;
-    if(address === request.from) {
+    if(currentUser === request.from) {
       related = true;
     }
 
@@ -513,11 +522,11 @@ angular.element(document).ready(function() {
     }
 
     window.requests.push(request)
-    if(address === request.from) {
+    if(currentUser === request.from) {
       $.publish('notice', 'Request send successfully.');
     }
 
-    if(address === request.provider) {
+    if(currentUser === request.provider) {
       $.publish('notice', 'You received a request.');
       $.publish('Request:create', request)
     }
@@ -527,10 +536,10 @@ angular.element(document).ready(function() {
     var id = result.args.id.toNumber();
     // FIXME: here should be id -1 or id
     request = window.requests[id - 1]
-    if(address === request.from) {
+    if(currentUser === request.from) {
       $.publish('notice', 'Yur request has been response');
     }
-    if(address === request.provider) {
+    if(currentUser === request.provider) {
       $.publish('notice', 'Your response has been sent automatically.');
     }
   });
@@ -542,7 +551,7 @@ angular.element(document).ready(function() {
       var fee = records[i].fee;
       var commit = records[i].commit;
 
-      order_book.submitRequest(commit, {value: fee, from: address});
+      order_book.submitRequest(commit, {value: fee, from: currentUser});
     }
   })
 
