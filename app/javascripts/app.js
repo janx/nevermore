@@ -599,7 +599,8 @@ angular.element(document).ready(function() {
     if (data) {
       var aesKey = randomBytes32();
       var secret = encryptForProvider(request.provider, aesKey);
-      var encryptedData = aesEncrypt(secret, data);
+      //var encryptedData = aesEncrypt(secret, data);
+      var encryptedData = data; // use plain text for now
       console.log("Auto respond to request: " + request);
       setTimeout(function(){
         $.publish('Response:new', {commit: commit, secret: secret, content: encryptedData});
