@@ -137,7 +137,7 @@ contract OrderBook is owned, mortal {
     (recProvider, recIdentity, recCategory, recState, recFee, recTimestamp) = CreditBook(creditBook).get(commit);
     recProvider.send(reqFees[id]);
 
-    NewResponse(id+1);
+    NewResponse(id);
   }
 
 }
