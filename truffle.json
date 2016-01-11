@@ -19,7 +19,13 @@
 
       "javascripts/constant.js",
       "javascripts/utils.js",
-      "javascripts/app.js"
+
+      "javascripts/filters.js",
+      "javascripts/app.js",
+      "javascripts/search_controller.js",
+      "javascripts/create_controller.js",
+      "javascripts/init_data.js",
+      "javascripts/watch_data.js"
     ],
     "app.css": [
       // Paths relative to "app" directory that should be
