@@ -26,6 +26,10 @@
       "javascripts/controllers/search_controller.js",
       "javascripts/controllers/create_controller.js",
       "javascripts/init_data.js",
+
+      "javascripts/watchers/record_watcher.js",
+      "javascripts/watchers/request_watcher.js",
+      "javascripts/watchers/response_watcher.js",
       "javascripts/watch_data.js"
     ],
     "app.css": [
