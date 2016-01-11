@@ -16,6 +16,9 @@
       "javascripts/lib/toastr.min.js",
       "javascripts/chart.js",
       "javascripts/index.js",
+
+      "javascripts/constant.js",
+      "javascripts/utils.js",
       "javascripts/app.js"
     ],
     "app.css": [
