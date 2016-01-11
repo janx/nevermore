@@ -23,8 +23,8 @@
       "javascripts/filters.js",
       "javascripts/app.js",
       "javascripts/subscribes.js",
-      "javascripts/search_controller.js",
-      "javascripts/create_controller.js",
+      "javascripts/controllers/search_controller.js",
+      "javascripts/controllers/create_controller.js",
       "javascripts/init_data.js",
       "javascripts/watch_data.js"
     ],
