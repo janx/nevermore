@@ -1,4 +1,7 @@
-angular.element(document).ready(function() {
+window.loadBook = function() {
+  window.credit_records = []
+  window.requests = []
+
   // initialize credit records
   credit_book.all({}).then(function(records){
     if(records[0].length > 0 ) {
@@ -69,4 +72,7 @@ angular.element(document).ready(function() {
       $.publish("CreditBook:list");
     });
   });
+}
+angular.element(document).ready(function() {
+  loadBook();
 });

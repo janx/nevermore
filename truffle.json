@@ -25,6 +25,7 @@
       "javascripts/subscribes.js",
       "javascripts/controllers/search_controller.js",
       "javascripts/controllers/create_controller.js",
+      "javascripts/controllers/account_controller.js",
       "javascripts/init_data.js",
 
       "javascripts/watchers/record_watcher.js",
@@ -49,7 +50,7 @@
   ],
   "rpc": {
     // Default RPC configuration.
-    "host": "localhost",
-    "port": 4999 // testrpc
+    "host": "127.0.0.1",
+    "port": 23333 // testrpc
   }
 }
