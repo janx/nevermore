@@ -65,6 +65,11 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
 
     // close upload modal
     $('#upload-modal').modal('hide');
+    // reset creditRecord
+    $scope.creditRecord = creditRecord = {
+      category: $scope.categoryOptions[0].value,
+      state: $scope.stateOptions[0].value
+    };
   }
 
 }]);
