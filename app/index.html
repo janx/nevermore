@@ -279,8 +279,8 @@
     </div>
   </section>
 
-  <footer class="footer" ng-controller="AccountCtrl">
-    <select ng-model="coinbase" ng-options="address for address in accounts"></select>
+  <footer class="footer" ng-controller="AccountCtrl" ng-mouseenter="accountSwitcher = true" ng-mouseleave="accountSwitcher = false">
+    <select ng-show="accountSwitcher" ng-model="coinbase" ng-options="address for address in accounts"></select>
     <a href="https://github.com/janx/nevermore" target="_blank">
       <img class="github shake-slow" src="images/github.svg" alt="">
     </a>
