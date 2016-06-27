@@ -44,6 +44,9 @@ app.controller('CreateCtrl', ['$scope', function ($scope) {
       desc: creditRecord.desc
     }
 
+    if(localStorage.getItem(commit)){
+      return false;
+    }
     localStorage.setItem(commit, angular.toJson(data));
 
     // TODO: reset form after create

@@ -1,5 +1,4 @@
 app.controller('SearchCtrl', ['$scope', function ($scope) {
-
   $scope.creditRecords = function() {
     return window.credit_records;
   }
