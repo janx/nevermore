@@ -81,7 +81,7 @@ app.controller('SearchCtrl', ['$scope', function ($scope) {
 
     $scope.cleanup();
 
-    $('#result-modal').modal('show');
+    //$('#result-modal').modal('show');
   }
 
   $scope.cleanup = function() {

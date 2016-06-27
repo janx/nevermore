@@ -6,6 +6,14 @@ angular.element(document).ready(function() {
   window.currentUser = localStorage.getItem("currentUser") || web3.eth.accounts[0];
   order_book.setCreditBook(CreditBook.deployed_address, {from: currentUser});
 
+  var accounts = web3.eth.accounts;
+  for(var i=0; i < accounts.length; i++){
+    Providers[accounts[i]] = {
+      name: "NMore" + i,
+      pubkey: "0xcccc" + i
+    }
+  }
+
   // Bootstrap Angualr module
   angular.bootstrap(document, ['Nevermore']);
 });

@@ -42,7 +42,7 @@ $.subscribe('Request:create', function(event, request) {
     console.log("Auto respond to request: " + request);
     setTimeout(function(){
       $.publish('Response:new', {commit: commit, secret: secret, content: encryptedData});
-    }, 5000);
+    }, 2000);
   }
 });
 

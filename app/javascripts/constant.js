@@ -17,5 +17,3 @@ window.Providers = {
     pubkey: "0xdddd"
   }
 };
-
-
